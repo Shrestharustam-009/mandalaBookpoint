@@ -373,7 +373,7 @@ export default function CartPage() {
                         onChange={handleInputChange}
                         required
                       />
-                      <span>Inside Valley (Rs. 100 for 1 kg)</span>
+                      <span>Inside Valley (Rs. 1 for 1 kg)</span>
                     </label>
                     <label className="radio-label">
                       <input

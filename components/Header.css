@@ -1,0 +1,409 @@
+/* Header Styles */
+
+:root {
+  --primary-color: #10b981;
+  --accent-color: #059669;
+  --text-color: #1f2937;
+  --border-color: #e5e7eb;
+}
+
+.header {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  position: relative;
+}
+
+.header-logo {
+  flex-shrink: 0;
+}
+
+.logo-link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.header-nav {
+  display: flex;
+  gap: 30px;
+  flex: 1;
+  margin-left: 50px;
+}
+
+.nav-link {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+.cart-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.cart-link:hover {
+  background-color: rgba(16, 185, 129, 0.05);
+  color: var(--primary-color);
+}
+
+.cart-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-name {
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-login,
+.btn-register,
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-login {
+  color: var(--primary-color);
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+}
+
+.btn-login:hover {
+  background-color: rgba(16, 185, 129, 0.05);
+}
+
+.btn-register {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-register:hover {
+  background-color: var(--accent-color);
+}
+
+.btn-logout {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.btn-logout:hover {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  padding: 8px;
+  margin-left: 10px;
+  z-index: 101;
+  flex-shrink: 0;
+}
+
+.menu-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+.mobile-nav-actions {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.user-info-mobile,
+.btn-login-mobile,
+.btn-register-mobile,
+.btn-logout-mobile {
+  width: 100%;
+}
+
+.user-info-mobile {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.user-name-mobile {
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-login-mobile,
+.btn-register-mobile,
+.btn-logout-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.btn-login-mobile {
+  color: var(--primary-color);
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+}
+
+.btn-register-mobile {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-logout-mobile {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .header-container {
+    padding: 0 15px;
+  }
+
+  .header-nav {
+    margin-left: 30px;
+    gap: 20px;
+  }
+
+  .header-actions {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    height: 60px;
+    padding: 0 15px;
+  }
+
+  .header-logo {
+    flex: 1;
+  }
+
+  .header-nav {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: white;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    padding: 20px;
+    display: none;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+
+  .header-nav.open {
+    display: flex;
+  }
+
+  .nav-link {
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+    width: 100%;
+  }
+
+  .nav-link:last-of-type {
+    border-bottom: none;
+  }
+
+  .header-actions {
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-nav-actions {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu-overlay {
+    display: block;
+  }
+
+  .logo-text {
+    font-size: 18px;
+  }
+
+  .cart-link {
+    padding: 6px;
+  }
+
+  .cart-link svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    height: 56px;
+    padding: 0 12px;
+  }
+
+  .header-nav {
+    top: 56px;
+    padding: 16px;
+    max-height: calc(100vh - 56px);
+  }
+
+  .header-actions {
+    gap: 6px;
+  }
+
+  .logo-text {
+    font-size: 16px;
+  }
+
+  .cart-link {
+    padding: 4px;
+  }
+
+  .cart-link svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .cart-badge {
+    font-size: 10px;
+    padding: 1px 5px;
+    min-width: 16px;
+  }
+
+  .menu-toggle {
+    padding: 6px;
+  }
+
+  .menu-toggle svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .nav-link {
+    padding: 10px 0;
+    font-size: 14px;
+  }
+
+  .mobile-nav-actions {
+    margin-top: 16px;
+    padding-top: 16px;
+    gap: 10px;
+  }
+
+  .btn-login-mobile,
+  .btn-register-mobile,
+  .btn-logout-mobile {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+}

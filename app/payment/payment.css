@@ -1,0 +1,146 @@
+.payment-container {
+  min-height: calc(100vh - 80px);
+  padding: 40px 20px;
+  background: #f8fafc;
+}
+
+.payment-card {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.payment-card h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.payment-error-message {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  border: 1px solid #fecaca;
+}
+
+.payment-order-summary {
+  background: #f9fafb;
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.payment-order-summary h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 16px;
+}
+
+.order-details p {
+  margin: 8px 0;
+  color: #4b5563;
+}
+
+.order-details strong {
+  color: #1f2937;
+  margin-right: 8px;
+}
+
+.payment-methods {
+  margin-bottom: 24px;
+}
+
+.payment-methods h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.payment-methods p {
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.payment-actions {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+}
+
+.btn-payment {
+  width: 100%;
+  padding: 14px 24px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-payment:hover:not(:disabled) {
+  background: #059669;
+}
+
+.btn-payment:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  width: 100%;
+  padding: 14px 24px;
+  background: white;
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  border-color: #d1d5db;
+  color: #1f2937;
+}
+
+.payment-loading,
+.payment-error {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.payment-error h2 {
+  font-size: 24px;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.payment-error p {
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 640px) {
+  .payment-card {
+    padding: 24px;
+  }
+  
+  .payment-card h1 {
+    font-size: 24px;
+  }
+}

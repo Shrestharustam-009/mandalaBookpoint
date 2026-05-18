@@ -51,7 +51,7 @@ export default function CartPage() {
     let base = 0;
 
     switch (location) {
-      case 'inside':          base = 100;  break;
+      case 'inside':          base = 1;    break;
       case 'outside':         base = 150;  break;
       case 'intl_europe_india': base = 1200; break;
       case 'intl_other':      base = 1500; break;

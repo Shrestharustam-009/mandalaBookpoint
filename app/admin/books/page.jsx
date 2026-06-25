@@ -148,7 +148,7 @@ export default function BooksPage() {
         isbn: formData.isbn.trim() || null,
         price: formData.price ? parseFloat(formData.price) : null,
         discount: parseFloat(formData.discount) || 0,
-        weight: formData.weight ? parseFloat(formData.weight) : null,
+        weight: formData.weight ? Number(parseFloat(formData.weight).toFixed(2)) : null,
         stock: parseInt(formData.stock, 10) || 0,
         availability: formData.availability,
         cover_image: formData.cover_image,
@@ -254,34 +254,36 @@ export default function BooksPage() {
 
   return (
     <div>
-      <div style={{ marginBottom: '30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-        <h1 style={{ margin: 0 }}>Books Management</h1>
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 m-0">Books Management</h1>
+        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center w-full sm:w-auto">
           <input
             type="search"
             placeholder="Search books..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="form-input"
-            style={{ minWidth: '220px', padding: '8px 12px' }}
+            className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none shadow-sm"
+            style={{ minWidth: '220px' }}
           />
-          <button className="btn-primary" onClick={() => setShowForm(true)}>
+          <button className="w-full sm:w-auto px-5 py-2.5 text-sm font-semibold text-white bg-primary rounded-xl transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-[0_4px_12px_rgba(79,70,229,0.25)] whitespace-nowrap" onClick={() => setShowForm(true)}>
             + Add Book
           </button>
         </div>
       </div>
 
       {showForm && (
-        <div className="admin-card" id="edit-id">
-          <div className="admin-card-title">
-            {editingId ? 'Edit Book' : 'Add New Book'}
-          </div>
-          <form onSubmit={handleSubmit}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" id="edit-id">
+          <div className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity duration-300" onClick={handleCancel}></div>
+          <div className="relative bg-white rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 md:p-8 z-10">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-6">
+              {editingId ? 'Edit Book' : 'Add New Book'}
+            </h2>
+            <form onSubmit={handleSubmit}>
             {/* Image Upload Section */}
-            <div className="form-group" style={{ marginBottom: '30px' }}>
-              <label className="form-label">Cover Image</label>
-              <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
-                <div>
+            <div className="form-group mb-8">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Cover Image</label>
+              <div className="flex flex-col sm:flex-row gap-5 items-start">
+                <div className="w-full sm:w-auto flex flex-col gap-3">
                   <input
                     type="file"
                     ref={fileInputRef}
@@ -289,24 +291,25 @@ export default function BooksPage() {
                     onChange={handleImageChange}
                     style={{ display: 'none' }}
                   />
-                  <button
-                    type="button"
-                    className="btn-secondary"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={uploadingImage}
-                  >
-                    {uploadingImage ? 'Uploading...' : 'Choose Image'}
-                  </button>
-                  {imagePreview && (
+                  <div className="flex flex-row gap-3 w-full sm:w-auto">
                     <button
                       type="button"
-                      className="btn-danger"
-                      onClick={handleRemoveImage}
-                      style={{ marginLeft: '10px' }}
+                      className="btn-secondary flex-1 sm:flex-none"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploadingImage}
                     >
-                      Remove
+                      {uploadingImage ? 'Uploading...' : 'Choose Image'}
                     </button>
-                  )}
+                    {imagePreview && (
+                      <button
+                        type="button"
+                        className="btn-danger flex-1 sm:flex-none"
+                        onClick={handleRemoveImage}
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
                 </div>
                 {imagePreview && (
                   <div style={{
@@ -334,13 +337,13 @@ export default function BooksPage() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="form-group">
-                <label className="form-label">Title</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Title</label>
                 <input
                   type="text"
                   name="title"
-                  className="form-input"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none"
                   value={formData.title}
                   onChange={handleInputChange}
                   required
@@ -348,11 +351,11 @@ export default function BooksPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Author</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Author</label>
                 <input
                   type="text"
                   name="author"
-                  className="form-input"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none"
                   value={formData.author}
                   onChange={handleInputChange}
                   required
@@ -360,11 +363,11 @@ export default function BooksPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">ISBN Number</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">ISBN Number</label>
                 <input
                   type="text"
                   name="isbn"
-                  className="form-input"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none"
                   value={formData.isbn}
                   onChange={handleInputChange}
                   placeholder="e.g., 978-3-16-148410-0"
@@ -372,7 +375,7 @@ export default function BooksPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Categories</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Categories</label>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {categories.map(cat => (
                     <label
@@ -400,11 +403,11 @@ export default function BooksPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Price (NRs) <span style={{ color: '#6b7280', fontWeight: 'normal' }}>(Optional)</span></label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Price (NRs) <span style={{ color: '#6b7280', fontWeight: 'normal' }}>(Optional)</span></label>
                 <input
                   type="number"
                   name="price"
-                  className="form-input"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none"
                   value={formData.price}
                   onChange={handleInputChange}
                   step="0.01"
@@ -414,11 +417,11 @@ export default function BooksPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Stock</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Stock</label>
                 <input
                   type="number"
                   name="stock"
-                  className="form-input"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none"
                   value={formData.stock}
                   onChange={handleInputChange}
                   min="0"
@@ -427,11 +430,11 @@ export default function BooksPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Discount (%)</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Discount (%)</label>
                 <input
                   type="number"
                   name="discount"
-                  className="form-input"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none"
                   value={formData.discount}
                   onChange={handleInputChange}
                   min="0"
@@ -441,11 +444,11 @@ export default function BooksPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Weight (kg)</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Weight (kg)</label>
                 <input
                   type="number"
                   name="weight"
-                  className="form-input"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none"
                   value={formData.weight}
                   onChange={handleInputChange}
                   step="0.01"
@@ -468,10 +471,10 @@ export default function BooksPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Description</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
               <textarea
                 name="description"
-                className="form-textarea"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none min-h-[120px] resize-y"
                 value={formData.description}
                 onChange={handleInputChange}
                 required
@@ -479,93 +482,105 @@ export default function BooksPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Tags (comma-separated)</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Tags (comma-separated)</label>
               <input
                 type="text"
                 name="tags"
-                className="form-input"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none"
                 value={formData.tags}
                 onChange={handleInputChange}
                 placeholder="e.g., fiction, classic, bestseller"
               />
             </div>
 
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button type="submit" className="btn-primary" disabled={uploadingImage}>
+            <div className="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-gray-100">
+              <button 
+                type="submit" 
+                className="w-full sm:w-auto px-6 py-2.5 text-sm font-semibold text-white bg-primary rounded-xl transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-[0_4px_12px_rgba(79,70,229,0.25)]" 
+                disabled={uploadingImage}
+              >
                 {editingId ? 'Update Book' : 'Create Book'}
               </button>
-              <button type="button" className="btn-secondary" onClick={handleCancel}>
+              <button 
+                type="button" 
+                className="w-full sm:w-auto px-6 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-all duration-200" 
+                onClick={handleCancel}
+              >
                 Cancel
               </button>
             </div>
           </form>
+          </div>
         </div>
       )}
 
-      <div className="admin-card">
+      <div className="bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-100/50">
         {books.length > 0 ? (
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Category</th>
-                <th>ISBN</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Weight</th>
-                <th>Discount</th>
-                <th>Available</th>
-                <th style={{ width: '150px' }}>Actions</th>
-              </tr>
-            </thead>
+          <div className="overflow-x-auto w-full">
+            <table className="w-full min-w-[800px] text-left border-collapse">
+              <thead>
+                <tr className="bg-gray-50/80 border-b border-gray-100">
+                  <th className="text-center px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Image</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Title</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Author</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Category</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">ISBN</th>
+                  <th className="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
+                  <th className="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Stock</th>
+                  <th className="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Weight</th>
+                  <th className="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Discount</th>
+                  <th className="text-center px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Available</th>
+                  <th className="text-center px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider" style={{ width: '150px' }}>Actions</th>
+                </tr>
+              </thead>
             <tbody>
               {filteredBooks.map(book => (
-                <tr key={book.id}>
-                  <td data-label="Image">
-                    <img
-                      src={(book.coverImage || book.cover_image || '/placeholder.jpg').startsWith('http') 
-                        ? (book.coverImage || book.cover_image) 
-                        : (book.coverImage || book.cover_image || '/placeholder.jpg')}
-                      alt={book.title || 'Book cover'}
-                      style={{
-                        width: '40px',
-                        height: '60px',
-                        objectFit: 'cover',
-                        borderRadius: '4px',
-                        backgroundColor: '#f3f4f6'
-                      }}
-                      onError={(e) => {
-                        if (e.target.src !== '/placeholder.jpg') {
-                          e.target.src = '/placeholder.jpg';
-                        }
-                      }}
-                    />
+                <tr key={book.id} className="hover:bg-gray-50/80 transition-colors duration-200 border-b border-gray-100">
+                  <td data-label="Image" className="text-center align-middle px-6 py-4">
+                    <div className="flex justify-center">
+                      <img
+                        src={(book.coverImage || book.cover_image || '/placeholder.jpg').startsWith('http') 
+                          ? (book.coverImage || book.cover_image) 
+                          : (book.coverImage || book.cover_image || '/placeholder.jpg')}
+                        alt={book.title || 'Book cover'}
+                        style={{
+                          width: '40px',
+                          height: '60px',
+                          objectFit: 'cover',
+                          borderRadius: '4px',
+                          backgroundColor: '#f3f4f6'
+                        }}
+                        onError={(e) => {
+                          if (e.target.src !== '/placeholder.jpg') {
+                            e.target.src = '/placeholder.jpg';
+                          }
+                        }}
+                      />
+                    </div>
                   </td>
-                  <td data-label="Title">{book.title || 'Untitled'}</td>
-                  <td data-label="Author">{book.author || 'Unknown'}</td>
-                  <td data-label="Category">
+                  <td data-label="Title" className="text-left align-middle font-medium px-6 py-4">{book.title || 'Untitled'}</td>
+                  <td data-label="Author" className="text-left align-middle px-6 py-4">{book.author || 'Unknown'}</td>
+                  <td data-label="Category" className="text-left align-middle px-6 py-4">
                     {book.categories && book.categories.length > 0
                       ? book.categories.map(c => c.name).join(', ')
                       : getCategoryName(book.categoryId || book.category_id)}
                   </td>
-                  <td data-label="ISBN">{book.isbn || '-'}</td>
-                  <td data-label="Price">{book.price != null ? `Rs. ${parseFloat(book.price).toFixed(2)}` : '-'}</td>
-                  <td data-label="Stock">{book.stock ?? 0}</td>
-                  <td data-label="Weight">{book.weight ? `${book.weight} kg` : '-'}</td>
-                  <td data-label="Discount">{book.discount || 0}%</td>
-                  <td data-label="Available">{book.availability ? '✓' : '✗'}</td>
-                  <td data-label="Actions">
+                  <td data-label="ISBN" className="text-left align-middle whitespace-nowrap px-6 py-4">{book.isbn || '-'}</td>
+                  <td data-label="Price" className="text-right align-middle whitespace-nowrap px-6 py-4">{book.price != null ? `Rs. ${parseFloat(book.price).toFixed(2)}` : '-'}</td>
+                  <td data-label="Stock" className="text-right align-middle px-6 py-4">{book.stock ?? 0}</td>
+                  <td data-label="Weight" className="text-right align-middle whitespace-nowrap px-6 py-4">{book.weight ? `${book.weight} kg` : '-'}</td>
+                  <td data-label="Discount" className="text-right align-middle px-6 py-4">{book.discount || 0}%</td>
+                  <td data-label="Available" className="text-center align-middle px-6 py-4">{book.availability ? '✓' : '✗'}</td>
+                  <td data-label="Actions" className="text-center align-middle px-6 py-4">
                     <button
-                      className="btn-secondary"
+                      className="px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors"
                       onClick={() => handleEdit(book)}
                       style={{ marginRight: '5px' }}
                     >
                       Edit
                     </button>
                     <button
-                      className="btn-danger"
+                      className="px-3 py-1.5 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 shadow-sm transition-colors"
                       onClick={() => handleDelete(book.id)}
                     >
                       Delete
@@ -574,7 +589,8 @@ export default function BooksPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
+          </div>
         ) : (
           <p style={{ textAlign: 'center', color: '#6b7280', padding: '20px' }}>
             {searchQuery ? `No books match "${searchQuery}".` : 'No books yet. Add one to get started!'}

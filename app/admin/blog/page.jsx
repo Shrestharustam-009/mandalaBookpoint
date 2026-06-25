@@ -122,17 +122,19 @@ export default function BlogAdminPage() {
           alignItems: 'center',
         }}
       >
-        <h1 style={{ margin: 0 }}>Blog Management</h1>
-        <button className="btn-primary" onClick={() => setShowForm(true)}>
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 m-0">Blog Management</h1>
+        <button className="px-5 py-2.5 text-sm font-semibold text-white bg-primary rounded-xl transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-[0_4px_12px_rgba(79,70,229,0.25)] whitespace-nowrap" onClick={() => setShowForm(true)}>
           + Add Post
         </button>
       </div>
 
       {showForm && (
-        <div className="admin-card">
-          <div className="admin-card-title">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+          <div className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity duration-300"></div>
+          <div className="relative bg-white rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 md:p-8 z-10">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-6">
             {editingSlug ? 'Edit Blog Post' : 'Add New Blog Post'}
-          </div>
+          </h2>
           <form onSubmit={handleSubmit}>
             <div
               style={{
@@ -142,11 +144,11 @@ export default function BlogAdminPage() {
               }}
             >
               <div className="form-group">
-                <label className="form-label">Title</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Title</label>
                 <input
                   type="text"
                   name="title"
-                  className="form-input"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none"
                   value={formData.title}
                   onChange={handleInputChange}
                   required
@@ -154,11 +156,11 @@ export default function BlogAdminPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Slug</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Slug</label>
                 <input
                   type="text"
                   name="slug"
-                  className="form-input"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none"
                   value={formData.slug}
                   onChange={handleInputChange}
                   placeholder="e.g., welcome-to-bookhaven"
@@ -168,11 +170,11 @@ export default function BlogAdminPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Author</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Author</label>
                 <input
                   type="text"
                   name="author"
-                  className="form-input"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none"
                   value={formData.author}
                   onChange={handleInputChange}
                   placeholder="Optional"
@@ -204,10 +206,10 @@ export default function BlogAdminPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Excerpt</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Excerpt</label>
               <textarea
                 name="excerpt"
-                className="form-textarea"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none min-h-[120px] resize-y"
                 value={formData.excerpt}
                 onChange={handleInputChange}
                 placeholder="Short summary shown in the blog list"
@@ -215,10 +217,10 @@ export default function BlogAdminPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Content</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Content</label>
               <textarea
                 name="content"
-                className="form-textarea"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none min-h-[120px] resize-y"
                 value={formData.content}
                 onChange={handleInputChange}
                 rows={8}
@@ -226,57 +228,58 @@ export default function BlogAdminPage() {
               />
             </div>
 
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button type="submit" className="btn-primary">
+            <div className="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-gray-100">
+              <button type="submit" className="px-5 py-2.5 text-sm font-semibold text-white bg-primary rounded-xl transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-[0_4px_12px_rgba(79,70,229,0.25)] whitespace-nowrap">
                 {editingSlug ? 'Update Post' : 'Create Post'}
               </button>
               <button
                 type="button"
-                className="btn-secondary"
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors"
                 onClick={handleCancel}
               >
                 Cancel
               </button>
             </div>
           </form>
+          </div>
         </div>
       )}
 
-      <div className="admin-card">
+      <div className="bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-100/50 mb-8">
         {posts.length > 0 ? (
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Slug</th>
-                <th>Author</th>
-                <th>Published</th>
-                <th>Published At</th>
-                <th style={{ width: '170px' }}>Actions</th>
+          <div className="overflow-x-auto w-full"><table className="w-full min-w-max text-left border-collapse">
+            <thead className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              <tr className="bg-gray-50/80 border-b border-gray-100">
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Title</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Slug</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Author</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Published</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Published At</th>
+                <th style={{ width: '170px' }} className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody>
               {posts.map(post => (
-                <tr key={post.id}>
-                  <td data-label="Title">{post.title}</td>
-                  <td data-label="Slug">{post.slug}</td>
-                  <td data-label="Author">{post.author || '-'}</td>
-                  <td data-label="Published">{post.published ? '✓' : '✗'}</td>
-                  <td data-label="Published At">
+                <tr key={post.id} className="hover:bg-gray-50/80 transition-colors duration-200 border-b border-gray-100">
+                  <td data-label="Title" className="align-middle px-6 py-4">{post.title}</td>
+                  <td data-label="Slug" className="align-middle px-6 py-4">{post.slug}</td>
+                  <td data-label="Author" className="align-middle px-6 py-4">{post.author || '-'}</td>
+                  <td data-label="Published" className="align-middle px-6 py-4">{post.published ? '✓' : '✗'}</td>
+                  <td data-label="Published At" className="align-middle px-6 py-4">
                     {post.publishedAt
                       ? new Date(post.publishedAt).toLocaleDateString()
                       : '-'}
                   </td>
-                  <td data-label="Actions">
+                  <td data-label="Actions" className="align-middle px-6 py-4">
                     <button
-                      className="btn-secondary"
+                      className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors"
                       onClick={() => handleEdit(post)}
                       style={{ marginRight: '5px' }}
                     >
                       Edit
                     </button>
                     <button
-                      className="btn-danger"
+                      className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 shadow-sm transition-colors"
                       onClick={() => handleDelete(post.slug)}
                     >
                       Delete
@@ -285,7 +288,7 @@ export default function BlogAdminPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         ) : (
           <p
             style={{

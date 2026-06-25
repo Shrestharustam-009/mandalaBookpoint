@@ -93,65 +93,101 @@ export default function AdminLayout({ children }) {
   ];
 
   return (
-    <div className="admin-layout">
+    <div className="min-h-screen bg-[#fafafa] flex font-sans text-gray-900">
+      
+      {/* Mobile Overlay */}
       {isMobile && sidebarOpen && (
         <div 
-          className="admin-sidebar-overlay"
+          className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-40 transition-opacity duration-300 ease-soft"
           onClick={() => setSidebarOpen(false)}
         />
       )}
-      <div className={`admin-sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
-        <div className="sidebar-header">
-          <h1 className="sidebar-title">
-            <Link href="/admin" className="logo-link">
+
+      {/* Glassmorphism Sidebar */}
+      <aside 
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white/80 backdrop-blur-md border-r border-gray-200/60 shadow-[4px_0_24px_rgba(0,0,0,0.02)] flex flex-col transition-transform duration-[400ms] ease-spring ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        }`}
+      >
+        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+          <h1 className="text-xl font-bold tracking-tight text-gray-900">
+            <Link href="/admin" className="hover:text-primary transition-colors duration-200">
               {siteConfig.siteName}
             </Link>
           </h1>
-          <button
-            className="sidebar-toggle"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            aria-label="Toggle sidebar"
-          >
-            {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {isMobile && (
+            <button
+              className="p-2 -mr-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-all"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X size={20} />
+            </button>
+          )}
         </div>
 
-        <nav className="sidebar-nav">
+        <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-1">
           {menuItems.map((item) => (
-            <Link key={item.href} href={item.href} className="nav-item">
-              <span className="nav-icon">{item.icon}</span>
-              {sidebarOpen && <span className="nav-label">{item.label}</span>}
+            <Link 
+              key={item.href} 
+              href={item.href} 
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ease-out hover:scale-[1.02] ${
+                pathname === item.href 
+                  ? 'bg-primary/10 text-primary font-medium shadow-[0_4px_12px_rgba(79,70,229,0.08)]' 
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+              }`}
+            >
+              <span className="text-lg">{item.icon}</span>
+              <span>{item.label}</span>
             </Link>
           ))}
         </nav>
 
-        <div className="sidebar-footer">
-          <Link href="/" className="footer-link">
+        <div className="p-4 border-t border-gray-100">
+          <Link 
+            href="/" 
+            className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors"
+          >
             ← Back to Site
           </Link>
         </div>
-      </div>
+      </aside>
 
-      <div className="admin-main">
-        <div className="admin-header">
-          {isMobile && (
+      {/* Main Content Area */}
+      <main 
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-[400ms] ease-spring ${
+          sidebarOpen ? 'md:ml-64' : 'ml-0'
+        }`}
+      >
+        {/* Glassmorphism Header */}
+        <header className="sticky top-0 z-30 bg-white/70 backdrop-blur-md border-b border-gray-200/60 px-6 py-4 flex items-center justify-between shadow-[0_4px_24px_rgba(0,0,0,0.02)]">
+          <div className="flex items-center gap-4">
             <button
-              className="sidebar-toggle"
+              className="p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors md:hidden"
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              aria-label="Toggle sidebar"
-              style={{ marginRight: '15px' }}
             >
-              {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+              <Menu size={24} />
             </button>
-          )}
-          <h2>Admin Dashboard</h2>
-          <div className="header-actions">
-            <span className="user-info">{user?.name || user?.email || 'Admin User'}</span>
-            <button className="logout-btn" onClick={handleLogout}>Logout</button>
+            <h2 className="hidden sm:block text-lg font-semibold text-gray-800">Admin Dashboard</h2>
           </div>
+          
+          <div className="flex items-center gap-5">
+            <span className="text-sm font-medium text-gray-600 hidden sm:block">
+              {user?.name || user?.email || 'Admin User'}
+            </span>
+            <button 
+              className="px-4 py-2 text-sm font-medium text-primary bg-primary/10 hover:bg-primary hover:text-white rounded-lg transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-[0_4px_12px_rgba(79,70,229,0.2)]"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
+        </header>
+
+        {/* Content Wrapper */}
+        <div className="p-4 md:p-8 lg:p-10 mx-auto w-full max-w-7xl">
+          {children}
         </div>
-        <div className="admin-content">{children}</div>
-      </div>
+      </main>
     </div>
   );
 }

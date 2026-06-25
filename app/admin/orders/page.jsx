@@ -88,21 +88,21 @@ export default function OrdersPage() {
           </div>
           
           <table>
-            <thead>
-              <tr>
-                <th>Book Title</th>
-                <th style="text-align: right;">Price (NPR)</th>
-                <th style="text-align: center;">Qty</th>
-                <th style="text-align: right;">Total (NPR)</th>
+            <thead className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              <tr className="bg-gray-50/80 border-b border-gray-100">
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Book Title</th>
+                <th style="text-align: right;" className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price (NPR)</th>
+                <th style="text-align: center;" className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Qty</th>
+                <th style="text-align: right;" className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total (NPR)</th>
               </tr>
             </thead>
             <tbody>
               ${(order.orderItems || []).map(item => `
                 <tr>
-                  <td>${item.title || ('Book #' + item.bookId)}</td>
-                  <td style="text-align: right;">NPR ${parseFloat(item.price).toFixed(2)}</td>
-                  <td style="text-align: center;">${item.quantity}</td>
-                  <td style="text-align: right;">NPR ${(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
+                  <td className="align-middle px-6 py-4">${item.title || ('Book #' + item.bookId)}</td>
+                  <td style="text-align: right;" className="align-middle px-6 py-4">NPR ${parseFloat(item.price).toFixed(2)}</td>
+                  <td style="text-align: center;" className="align-middle px-6 py-4">${item.quantity}</td>
+                  <td style="text-align: right;" className="align-middle px-6 py-4">NPR ${(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
                 </tr>
               `).join('')}
             </tbody>
@@ -133,29 +133,29 @@ export default function OrdersPage() {
     <div>
       <h1 style={{ marginBottom: '30px' }}>Orders Management</h1>
 
-      <div className="admin-card">
+      <div className="bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-100/50 mb-8">
         {orders.length > 0 ? (
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Customer</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
+          <div className="overflow-x-auto w-full"><table className="w-full min-w-max text-left border-collapse">
+            <thead className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              <tr className="bg-gray-50/80 border-b border-gray-100">
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Order ID</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Customer</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody>
               {orders.map(order => (
-                <tr key={order.id}>
-                  <td>#{order.id}</td>
-                  <td>
+                <tr key={order.id} className="hover:bg-gray-50/80 transition-colors duration-200 border-b border-gray-100">
+                  <td className="align-middle px-6 py-4">#{order.id}</td>
+                  <td className="align-middle px-6 py-4">
                     <div><strong>{order.customerName || order.customer}</strong></div>
                     <div style={{ fontSize: '12px', color: '#6b7280' }}>{order.customerEmail}</div>
                   </td>
-                  <td>NPR {parseFloat(order.totalAmount || order.amount).toFixed(2)}</td>
-                  <td>
+                  <td className="align-middle px-6 py-4">NPR {parseFloat(order.totalAmount || order.amount).toFixed(2)}</td>
+                  <td className="align-middle px-6 py-4">
                     <span className={`status-badge ${order.status?.toLowerCase() === 'paid' ? 'status-paid' : 'status-pending'}`} style={{
                       display: 'inline-block',
                       padding: '4px 8px',
@@ -169,17 +169,17 @@ export default function OrdersPage() {
                       {order.status}
                     </span>
                   </td>
-                  <td>{new Date(order.createdAt || order.date).toLocaleDateString()}</td>
-                  <td>
+                  <td className="align-middle px-6 py-4">{new Date(order.createdAt || order.date).toLocaleDateString()}</td>
+                  <td className="align-middle px-6 py-4">
                     <button 
-                      className="btn-secondary" 
+                      className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors" 
                       style={{ marginRight: '5px', padding: '6px 12px', cursor: 'pointer' }}
                       onClick={() => handleViewOrder(order.id)}
                     >
                       View
                     </button>
                     <button 
-                      className="btn-secondary"
+                      className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors"
                       style={{ padding: '6px 12px', cursor: 'pointer' }}
                       onClick={() => handlePrint(order)}
                     >
@@ -189,7 +189,7 @@ export default function OrdersPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         ) : (
           <p style={{ textAlign: 'center', color: '#6b7280', padding: '20px' }}>
             No orders yet.
@@ -211,7 +211,7 @@ export default function OrdersPage() {
           alignItems: 'center',
           zIndex: 1000
         }}>
-          <div className="admin-card" style={{
+          <div className="bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-100/50 mb-8" style={{
             width: '600px',
             maxHeight: '90vh',
             overflowY: 'auto',
@@ -257,21 +257,21 @@ export default function OrdersPage() {
             <div style={{ marginBottom: '25px' }}>
               <h4 style={{ margin: '0 0 10px 0', color: '#374151' }}>Items Purchased</h4>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
-                <thead>
+                <thead className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
-                    <th style={{ textAlign: 'left', padding: '8px 0' }}>Book Title</th>
-                    <th style={{ textAlign: 'right', padding: '8px 0' }}>Price</th>
-                    <th style={{ textAlign: 'center', padding: '8px 0' }}>Qty</th>
-                    <th style={{ textAlign: 'right', padding: '8px 0' }}>Total</th>
+                    <th style={{ textAlign: 'left', padding: '8px 0' }} className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Book Title</th>
+                    <th style={{ textAlign: 'right', padding: '8px 0' }} className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
+                    <th style={{ textAlign: 'center', padding: '8px 0' }} className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Qty</th>
+                    <th style={{ textAlign: 'right', padding: '8px 0' }} className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   {(selectedOrder.orderItems || []).map((item, idx) => (
                     <tr key={idx} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                      <td style={{ padding: '8px 0' }}>{item.title || `Book #${item.bookId}`}</td>
-                      <td style={{ textAlign: 'right', padding: '8px 0' }}>NPR {parseFloat(item.price).toFixed(2)}</td>
-                      <td style={{ textAlign: 'center', padding: '8px 0' }}>{item.quantity}</td>
-                      <td style={{ textAlign: 'right', padding: '8px 0' }}>NPR {(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
+                      <td style={{ padding: '8px 0' }} className="align-middle px-6 py-4">{item.title || `Book #${item.bookId}`}</td>
+                      <td style={{ textAlign: 'right', padding: '8px 0' }} className="align-middle px-6 py-4">NPR {parseFloat(item.price).toFixed(2)}</td>
+                      <td style={{ textAlign: 'center', padding: '8px 0' }} className="align-middle px-6 py-4">{item.quantity}</td>
+                      <td style={{ textAlign: 'right', padding: '8px 0' }} className="align-middle px-6 py-4">NPR {(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -282,10 +282,10 @@ export default function OrdersPage() {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', borderTop: '1px solid #e5e7eb', paddingTop: '15px' }}>
-              <button className="btn-secondary" style={{ padding: '8px 16px', cursor: 'pointer' }} onClick={() => handlePrint(selectedOrder)}>
+              <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors" style={{ padding: '8px 16px', cursor: 'pointer' }} onClick={() => handlePrint(selectedOrder)}>
                 Print Invoice
               </button>
-              <button className="btn-primary" style={{ padding: '8px 16px', cursor: 'pointer' }} onClick={() => setSelectedOrder(null)}>
+              <button className="px-5 py-2.5 text-sm font-semibold text-white bg-primary rounded-xl transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-[0_4px_12px_rgba(79,70,229,0.25)] whitespace-nowrap" style={{ padding: '8px 16px', cursor: 'pointer' }} onClick={() => setSelectedOrder(null)}>
                 Close
               </button>
             </div>

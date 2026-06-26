@@ -45,4 +45,8 @@ next-env.d.ts
 /test-paco.js
 /add-user.js
 /scripts/test-payment-flow.js
+/scripts/create-admin.js
 
+# extra database files
+*.db
+sqlite.db

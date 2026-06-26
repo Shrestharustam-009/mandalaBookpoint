@@ -90,150 +90,44 @@ export default function HomePage() {
       <Header isAuthenticated={isAuthenticated} user={user} />
       <PopupManager />
 
-      {/* Browse & Filter Section (copied from /books) */}
-      <div className="books-page">
-        <div className="container">
-
-
-          {error && (
-            <div className="error-message" style={{
-              background: '#fee2e2',
-              color: '#991b1b',
-              padding: '16px 20px',
-              borderRadius: '8px',
-              marginBottom: '30px',
-              border: '1px solid #fecaca',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: '12px'
-            }}>
-              <div style={{ flex: 1 }}>
-                <strong style={{ display: 'block', marginBottom: '4px' }}>Error Loading Books</strong>
-                <span>{error.message}</span>
-              </div>
+      {/* Hero Section */}
+      <section className="hero-section">
+        <div className="container hero-container">
+          <div className="hero-text-content">
+            <h1 className="hero-title">
+              Discover Your<br />Next Great Read.
+            </h1>
+            <p className="hero-subtitle">
+              Curated collections and new arrivals for the<br />discerning reader.
+            </p>
+            <Link href="/books" className="hero-btn">
+              Explore Collection &rarr;
+            </Link>
+          </div>
+          <div className="hero-visual">
+            <div className="floating-books">
+              {recentBooks.slice(0, 5).map((book, idx) => (
+                <div key={idx} className={`floating-book floating-book-${idx + 1}`}>
+                  <img src={book.coverImage || "/placeholder.svg"} alt={book.title} />
+                </div>
+              ))}
             </div>
-          )}
-
-          {!error && (
-            <>
-              {/* Search and Filters Bar */}
-              <div className="search-filters-bar">
-                <div className="search-bar">
-                  <input
-                    type="text"
-                    placeholder="Search books..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="search-input"
-                  />
-                </div>
-
-                <div className="filters-row">
-                  {(searchQuery || selectedCategory) && (
-                    <button
-                      className="clear-filters-btn"
-                      onClick={() => {
-                        setSearchQuery('');
-                        setSelectedCategory(null);
-                      }}
-                    >
-                      Clear Filters
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <div className="books-layout">
-                {/* Sidebar */}
-                <aside className="books-sidebar">
-                  <div className="filter-group">
-                    <h3 className="filter-title">Categories</h3>
-                    <div className="category-list">
-                      <button
-                        className={`category-item ${selectedCategory === null ? 'active' : ''}`}
-                        onClick={() => setSelectedCategory(null)}
-                      >
-                        All Books
-                      </button>
-                      {categories.map(category => (
-                        <button
-                          key={category.id}
-                          className={`category-item ${selectedCategory === category.id ? 'active' : ''}`}
-                          onClick={() => setSelectedCategory(category.id)}
-                        >
-                          {category.name}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </aside>
-
-                {/* Main Content */}
-                <main className="books-main">
-                  <div className="results-info">
-                    <p>
-                      {displayBooks.length === 0
-                        ? 'No books found'
-                        : `Showing ${displayBooks.length} ${displayBooks.length === 1 ? 'book' : 'books'}`}
-                      {selectedCategory && (
-                        <span> in {categories.find(c => c.id === selectedCategory)?.name}</span>
-                      )}
-                      {searchQuery && (
-                        <span> matching "{searchQuery}"</span>
-                      )}
-                    </p>
-                  </div>
-
-                  {displayBooks.length > 0 ? (
-                    <div className="books-grid">
-                      {displayBooks.map(book => (
-                        <BookCard key={book.id} book={book} />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="no-results">
-                      <div style={{ fontSize: '64px', marginBottom: '20px', opacity: 0.5 }}>📚</div>
-                      <p>No books found</p>
-                      {(searchQuery || selectedCategory) && (
-                        <button
-                          className="reset-btn"
-                          onClick={() => {
-                            setSearchQuery('');
-                            setSelectedCategory(null);
-                          }}
-                        >
-                          Clear Filters
-                        </button>
-                      )}
-                      {!searchQuery && !selectedCategory && books.length === 0 && (
-                        <p style={{ marginTop: '12px', fontSize: '14px', color: '#9ca3af' }}>
-                          Check back soon for new additions to our collection.
-                        </p>
-                      )}
-                    </div>
-                  )}
-                </main>
-              </div>
-            </>
-          )}
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Recently Added Section */}
-      {recentBooks.length > 0 && (
-        <section className="featured-spotlight">
+      {/* Curated Collections Section */}
+      {featuredBooks.length > 0 && (
+        <section className="curated-section">
           <div className="container">
             <div className="section-header-modern">
-              <div className="section-label">Just In</div>
-              <h2 className="section-title-modern">Recently Added Books</h2>
+              <h2 className="section-title-modern">Curated Collections</h2>
               <p className="section-description">
-                The latest additions to {siteConfig.siteName}'s collection
+                Curated collections beyond comparing reads.
               </p>
             </div>
             <div className="books-grid-modern">
-              {recentBooks.map(book => (
+              {featuredBooks.map(book => (
                 <BookCard key={book.id} book={book} />
               ))}
             </div>
@@ -241,21 +135,28 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Featured Books Section */}
-      {featuredBooks.length > 0 && (
-        <section className="featured-spotlight">
+      {/* New Arrivals Section */}
+      {recentBooks.length > 0 && (
+        <section className="new-arrivals-section">
           <div className="container">
-            <div className="section-header-modern">
-              <div className="section-label">Special Offers</div>
-              <h2 className="section-title-modern">Featured Books</h2>
-              <p className="section-description">
-                Books with special discounts and promotions
-              </p>
+            <div className="section-header-modern header-with-arrows">
+              <div>
+                <h2 className="section-title-modern">New Arrivals</h2>
+                <p className="section-description">
+                  Scroll-reveal animation and new book collections.
+                </p>
+              </div>
+              <div className="carousel-arrows">
+                <button className="carousel-arrow">&lt;</button>
+                <button className="carousel-arrow active">&gt;</button>
+              </div>
             </div>
-            <div className="books-grid-modern">
-              {featuredBooks.map(book => (
-                <BookCard key={book.id} book={book} />
-              ))}
+            <div className="books-carousel-container">
+              <div className="books-grid-modern carousel-layout">
+                {recentBooks.map(book => (
+                  <BookCard key={book.id} book={book} />
+                ))}
+              </div>
             </div>
           </div>
         </section>

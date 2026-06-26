@@ -25,6 +25,38 @@ export default function BookCard({ book }) {
     e.preventDefault();
     e.stopPropagation();
     if (canPurchase) {
+      // Flying book animation
+      const cardEl = e.target.closest('.book-card');
+      const imgEl = cardEl ? cardEl.querySelector('.book-image') : null;
+      const cartIcon = document.getElementById('cart-icon');
+      
+      if (imgEl && cartIcon) {
+        const imgRect = imgEl.getBoundingClientRect();
+        const cartRect = cartIcon.getBoundingClientRect();
+        
+        const flyingImg = document.createElement('img');
+        flyingImg.src = book.coverImage || "/placeholder.svg";
+        flyingImg.className = 'flying-book-anim';
+        flyingImg.style.left = `${imgRect.left}px`;
+        flyingImg.style.top = `${imgRect.top}px`;
+        flyingImg.style.width = `${imgRect.width}px`;
+        flyingImg.style.height = `${imgRect.height}px`;
+        
+        document.body.appendChild(flyingImg);
+        
+        // Trigger reflow to start animation
+        void flyingImg.offsetWidth;
+        
+        flyingImg.style.transform = `translate(${cartRect.left - imgRect.left + 10}px, ${cartRect.top - imgRect.top}px) scale(0.1) rotate(15deg)`;
+        flyingImg.style.opacity = '0.5';
+        
+        setTimeout(() => {
+          if (document.body.contains(flyingImg)) {
+            document.body.removeChild(flyingImg);
+          }
+        }, 800);
+      }
+      
       addToCart(book, 1);
     }
   };

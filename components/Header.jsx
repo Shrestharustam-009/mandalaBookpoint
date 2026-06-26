@@ -60,7 +60,13 @@ export default function Header({ isAuthenticated, user }) {
         </nav>
 
         <div className="header-actions">
-          <Link href="/cart" className="cart-link" onClick={() => setMenuOpen(false)}>
+          <form className="header-search desktop-only" onSubmit={(e) => { e.preventDefault(); router.push(`/books?search=${e.target.elements.search.value}`); }}>
+            <input type="text" name="search" placeholder="Search for books or authors..." className="header-search-input" />
+            <button type="submit" className="header-search-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+          </form>
+          <Link href="/cart" id="cart-icon" className="cart-link" onClick={() => setMenuOpen(false)}>
             <ShoppingCart size={20} />
             {cartItemCount > 0 && (
               <span className="cart-badge">{cartItemCount}</span>

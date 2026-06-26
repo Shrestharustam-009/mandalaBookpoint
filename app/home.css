@@ -573,15 +573,15 @@ body {
 /* ========== FEATURES SECTION ========== */
 .features-section {
   padding: 100px 0;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background: var(--background-secondary);
 }
 
 .features-section .section-title-modern {
-  color: white;
+  color: var(--text-primary);
 }
 
 .features-section .section-description {
-  color: #cbd5e1;
+  color: var(--text-secondary);
 }
 
 .features-grid {
@@ -592,80 +592,62 @@ body {
 }
 
 .feature-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: white;
+  border: 1px solid var(--border);
   border-radius: 16px;
   padding: 40px 32px;
   text-align: center;
   transition: all 0.4s ease;
-  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
 }
 
 .feature-card:hover {
-  background: rgba(255, 255, 255, 0.08);
   border-color: var(--accent);
   transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }
 
 .feature-icon {
-  font-size: 56px;
   margin-bottom: 24px;
   display: inline-block;
-  animation: float 3s ease-in-out infinite;
-}
-
-.feature-card:nth-child(2) .feature-icon {
-  animation-delay: 0.5s;
-}
-
-.feature-card:nth-child(3) .feature-icon {
-  animation-delay: 1s;
-}
-
-.feature-card:nth-child(4) .feature-icon {
-  animation-delay: 1.5s;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  color: var(--accent);
 }
 
 .feature-title {
   font-family: 'Sora', sans-serif;
   font-size: 22px;
   font-weight: 700;
-  color: white;
+  color: var(--text-primary);
   margin-bottom: 16px;
   letter-spacing: -0.01em;
 }
 
 .feature-description {
   font-size: 15px;
-  color: #cbd5e1;
+  color: var(--text-secondary);
   line-height: 1.7;
 }
 
 /* ========== NEWSLETTER MODERN ========== */
 .newsletter-modern {
   padding: 100px 0;
-  background: var(--background-secondary);
+  background: white;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   overflow: hidden;
 }
 
 .newsletter-container {
-  max-width: 1280px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 0 24px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
+  text-align: center;
 }
 
 .newsletter-icon {
-  font-size: 60px;
   margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
 }
 
 .newsletter-title {
@@ -712,7 +694,7 @@ body {
   align-items: center;
   gap: 8px;
   padding: 16px 32px;
-  background: var(--accent);
+  background: #10b981;
   color: white;
   border: none;
   border-radius: 12px;
@@ -725,7 +707,7 @@ body {
 }
 
 .newsletter-btn-modern:hover {
-  background: var(--accent-dark);
+  background: #059669;
   transform: translateX(4px);
 }
 
@@ -734,60 +716,7 @@ body {
   color: var(--text-light);
 }
 
-.newsletter-visual {
-  position: relative;
-  height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.newsletter-book-stack {
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
-}
-
-.book-spine {
-  width: 50px;
-  height: 300px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-  border-radius: 4px;
-  box-shadow: var(--shadow-lg);
-  animation: bookRise 1s ease both;
-  animation-delay: var(--delay);
-}
-
-.book-spine:nth-child(2) {
-  height: 350px;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-}
-
-.book-spine:nth-child(3) {
-  height: 320px;
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-}
-
-.book-spine:nth-child(4) {
-  height: 280px;
-  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
-}
-
-.book-spine:nth-child(5) {
-  height: 340px;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-}
-
-@keyframes bookRise {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 /* ========== TESTIMONIALS ========== */
 .testimonials-section {
@@ -824,7 +753,8 @@ body {
 }
 
 .testimonial-text {
-  font-size: 16px;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
   line-height: 1.8;
   color: var(--text-secondary);
   margin-bottom: 24px;
@@ -987,6 +917,20 @@ body {
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
+  .hero-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .hero-text-content {
+    margin-bottom: 40px;
+  }
+  
+  .hero-visual {
+    width: 100%;
+    min-height: 400px;
+  }
+
   .hero-stats {
     flex-direction: column;
     gap: 20px;
@@ -997,8 +941,17 @@ body {
     display: none;
   }
   
-  .featured-grid {
-    grid-template-columns: 1fr;
+  .featured-grid, .showcase-grid, .books-grid-modern {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .carousel-layout {
+    gap: 16px;
+  }
+  
+  .carousel-layout .book-card {
+    min-width: calc(50% - 8px); /* Fit 2 cards per view (minus gap) */
   }
   
   .category-pills {

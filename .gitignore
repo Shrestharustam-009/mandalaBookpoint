@@ -45,4 +45,13 @@ next-env.d.ts
 /test-paco.js
 /add-user.js
 /scripts/test-payment-flow.js
+/scripts/create-admin.js
 
+# extra database files
+*.db
+sqlite.db
+
+# Secrets
+paco-enc-key.b64
+paco-sign-key.b64
+signing-key.b64

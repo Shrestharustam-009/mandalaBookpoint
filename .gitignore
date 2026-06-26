@@ -50,3 +50,8 @@ next-env.d.ts
 # extra database files
 *.db
 sqlite.db
+
+# Secrets
+paco-enc-key.b64
+paco-sign-key.b64
+signing-key.b64

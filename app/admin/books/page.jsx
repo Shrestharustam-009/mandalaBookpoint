@@ -522,7 +522,7 @@ export default function BooksPage() {
                 <tr className="bg-gray-50/80 border-b border-gray-100">
                   <th className="text-center px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Image</th>
                   <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Title</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Author</th>
+                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider min-w-[250px] w-1/4">Author</th>
                   <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Category</th>
                   <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">ISBN</th>
                   <th className="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
@@ -559,7 +559,7 @@ export default function BooksPage() {
                     </div>
                   </td>
                   <td data-label="Title" className="text-left align-middle font-medium px-6 py-4">{book.title || 'Untitled'}</td>
-                  <td data-label="Author" className="text-left align-middle px-6 py-4">{book.author || 'Unknown'}</td>
+                  <td data-label="Author" className="text-left align-middle px-6 py-4"><div className="line-clamp-2">{book.author || 'Unknown'}</div></td>
                   <td data-label="Category" className="text-left align-middle px-6 py-4">
                     {book.categories && book.categories.length > 0
                       ? book.categories.map(c => c.name).join(', ')

@@ -181,6 +181,7 @@ function BooksContent() {
                         width={130}
                         height={195}
                         className="latest-book-image"
+                        style={{ width: '100%', height: 'auto' }}
                         priority={false}
                       />
                     </Link>

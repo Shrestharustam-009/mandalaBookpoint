@@ -920,21 +920,44 @@ body {
   .hero-container {
     flex-direction: column;
     text-align: center;
+    padding-top: 40px;
+    padding-bottom: 10px;
   }
   
   .hero-text-content {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
   
   .hero-visual {
     width: 100%;
-    min-height: 400px;
+    min-height: 260px; /* Reduced further */
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .floating-books {
+    position: relative;
+    width: 280px;
+    height: 100%;
+    transform: scale(0.85);
+    transform-origin: top center;
+  }
+  
+  .floating-book-1 { top: 0; left: 5%; right: auto; z-index: 2; transform: rotate(-8deg); }
+  .floating-book-2 { top: 50px; left: 45%; right: auto; z-index: 3; transform: rotate(12deg); }
+  .floating-book-3 { top: 120px; left: 15%; right: auto; z-index: 4; transform: rotate(-5deg); }
+  .floating-book-4 { display: none; }
+  .floating-book-5 { display: none; }
+
+  .curated-section, .new-arrivals-section {
+    padding: 20px 0;
   }
 
   .hero-stats {
     flex-direction: column;
-    gap: 20px;
-    align-items: flex-start;
+    gap: 14px;
+    align-items: center;
   }
   
   .stat-divider {

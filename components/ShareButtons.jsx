@@ -32,8 +32,7 @@ export default function ShareButtons({ url, title, text = '' }) {
   };
 
   return (
-    <div className="share-buttons" style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-      <span style={{ fontSize: '14px', color: 'var(--text-secondary)', marginRight: '4px' }}>Share:</span>
+    <div className="share-buttons" style={{ display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', paddingBottom: '12px' }}>
       <a
         href={facebookUrl}
         onClick={(e) => handleShare(e, facebookUrl)}
@@ -43,8 +42,8 @@ export default function ShareButtons({ url, title, text = '' }) {
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: 36,
-          height: 36,
+          width: 32,
+          height: 32,
           borderRadius: '50%',
           backgroundColor: '#1877f2',
           color: '#fff',
@@ -64,8 +63,8 @@ export default function ShareButtons({ url, title, text = '' }) {
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: 36,
-          height: 36,
+          width: 32,
+          height: 32,
           borderRadius: '50%',
           backgroundColor: '#25d366',
           color: '#fff',
@@ -85,8 +84,8 @@ export default function ShareButtons({ url, title, text = '' }) {
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: 36,
-          height: 36,
+          width: 32,
+          height: 32,
           border: 'none',
           borderRadius: '50%',
           backgroundColor: '#e4405f',

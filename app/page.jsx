@@ -117,7 +117,7 @@ export default function HomePage() {
             <div className="floating-books">
               {recentBooks.slice(0, 5).map((book, idx) => (
                 <div key={idx} className={`floating-book floating-book-${idx + 1}`}>
-                  <Image src={book.coverImage || "/placeholder.svg"} alt={book.title} width={180} height={260} priority={true} />
+                  <Image src={book.coverImage || "/placeholder.svg"} alt={book.title} width={180} height={260} priority={true} style={{ width: '100%', height: 'auto' }} />
                 </div>
               ))}
             </div>
@@ -154,10 +154,6 @@ export default function HomePage() {
                 <p className="section-description">
                   Discover the latest additions to our collection, fresh off the press.
                 </p>
-              </div>
-              <div className="carousel-arrows">
-                <button className="carousel-arrow">&lt;</button>
-                <button className="carousel-arrow active">&gt;</button>
               </div>
             </div>
             <div className="books-carousel-container">

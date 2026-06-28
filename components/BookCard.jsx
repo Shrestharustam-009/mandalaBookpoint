@@ -73,6 +73,7 @@ export default function BookCard({ book }) {
             width={180}
             height={260}
             className="book-image"
+            style={{ width: '100%', height: 'auto' }}
             priority={false}
           />
           {book.discount > 0 && (

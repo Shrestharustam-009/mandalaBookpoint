@@ -189,7 +189,9 @@ export default function BookDetailPage({ params }) {
                   )}
                 </div>
               )}
-              <p className="book-description">{book.description}</p>
+              <div className="mt-6 space-y-4 text-base leading-loose text-gray-700 whitespace-pre-wrap">
+                {book.description}
+              </div>
 
 
               {/* Quantity & Add to Cart */}

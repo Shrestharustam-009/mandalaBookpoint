@@ -29,6 +29,11 @@ function BooksContent() {
     if (categoryParam) {
       setSelectedCategory(parseInt(categoryParam));
     }
+    
+    const searchParam = searchParams.get('search');
+    if (searchParam) {
+      setSearchQuery(searchParam);
+    }
   }, [searchParams]);
 
   useEffect(() => {
@@ -152,12 +157,16 @@ function BooksContent() {
 
           {/* Page Header */}
           <div className="page-header">
-            <h1>Browse Books</h1>
+            {searchQuery ? (
+              <h1>Search Results for: "{searchQuery}"</h1>
+            ) : (
+              <h1>Browse Books</h1>
+            )}
             <p>Discover our collection of carefully curated books</p>
           </div>
 
           {/* Latest Books Slider */}
-          {!error && latestBooks.length > 0 && (
+          {!error && !searchQuery && latestBooks.length > 0 && (
             <>
               <div style={{ marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#9ca3af' }}>

@@ -27,7 +27,7 @@ export default function BookCard({ book }) {
     if (canPurchase) {
       // Flying book animation
       const cardEl = e.target.closest('.book-card');
-      const imgEl = cardEl ? cardEl.querySelector('.book-image') : null;
+      const imgEl = cardEl ? cardEl.querySelector('.bc-image') : null;
       const cartIcon = document.getElementById('cart-icon');
       
       if (imgEl && cartIcon) {
@@ -36,7 +36,7 @@ export default function BookCard({ book }) {
         
         const flyingImg = document.createElement('img');
         flyingImg.src = book.coverImage || "/placeholder.svg";
-        flyingImg.className = 'flying-book-anim';
+        flyingImg.className = 'bc-flying-anim';
         flyingImg.style.left = `${imgRect.left}px`;
         flyingImg.style.top = `${imgRect.top}px`;
         flyingImg.style.width = `${imgRect.width}px`;
@@ -65,58 +65,61 @@ export default function BookCard({ book }) {
 
   return (
     <div className="book-card">
-      <Link href={`/books/${book.id}`} className="book-card-link">
-        <div className="book-image-container">
+      <Link href={`/books/${book.id}`} className="bc-link">
+        <div className="bc-image-container">
           <Image
             src={book.coverImage || "/placeholder.svg"}
             alt={book.title}
             width={180}
             height={260}
-            className="book-image"
+            className="bc-image"
             style={{ width: '100%', height: 'auto' }}
             priority={false}
           />
           {book.discount > 0 && (
-            <div className="discount-badge">
+            <div className="bc-discount-badge">
               -{book.discount}%
             </div>
           )}
         </div>
 
-        <div className="book-info">
-          <h3 className="book-title">{book.title}</h3>
-          <p className="book-author">by {book.author}</p>
+        <div className="bc-info">
+          <h3 className="bc-title">{book.title}</h3>
+          <p className="bc-author">by {book.author}</p>
 
           {hasPrice && (
-            <div className="book-price">
+            <div className="bc-price-wrap">
               {discountedPriceInfo ? (
                 <>
-                  <span className="original-price">{priceInfo.primary}</span>
-                  <span className="discounted-price">{discountedPriceInfo.primary}</span>
+                  <span className="bc-original-price">{priceInfo.primary}</span>
+                  <span className="bc-discounted-price">{discountedPriceInfo.primary}</span>
                 </>
               ) : (
-                <span className="price">{priceInfo.primary}</span>
+                <span className="bc-final-price">{priceInfo.primary}</span>
               )}
             </div>
           )}
 
-          <div className="book-tags">
+          <div className="bc-tags">
             {book.tags && book.tags.slice(0, 2).map((tag, idx) => (
-              <span key={idx} className="tag">{tag}</span>
+              <span key={idx} className="bc-tag">{tag}</span>
             ))}
           </div>
         </div>
       </Link>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px' }}>
+      <div className="bc-actions">
         <button 
-          className="btn-add-to-cart" 
+          className="bc-add-to-cart" 
           disabled={!canPurchase}
           onClick={handleAddToCart}
         >
           {canPurchase ? 'Add to Cart' : !hasPrice ? 'Price on request' : 'Out of Stock'}
         </button>
-        <ShareButtons url={bookUrl} title={book.title} />
+        <div className="bc-share-container">
+          <span className="bc-share-label">Share:</span>
+          <ShareButtons url={bookUrl} title={book.title} />
+        </div>
       </div>
     </div>
   );

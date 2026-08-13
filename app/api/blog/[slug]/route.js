@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/auth';
 import { dbService } from '@/lib/db-service';
 
 function getValidSlug(params) {
@@ -31,7 +32,7 @@ export async function GET(_request, { params }) {
 // Update blog post by slug (used by admin panel)
 export async function PUT(request, { params }) {
   try {
-    const { requireAdmin } = require('@/lib/auth');
+
     const admin = await requireAdmin(request);
     if (!admin) return NextResponse.json({ error: 'Unauthorized. Admin access required.' }, { status: 401 });
 
@@ -58,7 +59,7 @@ export async function PUT(request, { params }) {
 // Delete blog post by slug (used by admin panel)
 export async function DELETE(request, { params }) {
   try {
-    const { requireAdmin } = require('@/lib/auth');
+
     const admin = await requireAdmin(request);
     if (!admin) return NextResponse.json({ error: 'Unauthorized. Admin access required.' }, { status: 401 });
 

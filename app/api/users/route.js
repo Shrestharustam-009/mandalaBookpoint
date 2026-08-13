@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/auth';
 import { dbService } from '@/lib/db-service';
 
 export async function GET(request) {
   try {
-    const { requireAdmin } = require('@/lib/auth');
+
     const admin = await requireAdmin(request);
     if (!admin) return NextResponse.json({ error: 'Unauthorized. Admin access required.' }, { status: 401 });
 
@@ -17,7 +18,7 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
-    const { requireAdmin } = require('@/lib/auth');
+
     const admin = await requireAdmin(request);
     if (!admin) return NextResponse.json({ error: 'Unauthorized. Admin access required.' }, { status: 401 });
 

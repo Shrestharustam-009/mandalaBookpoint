@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { createAuthToken } from '@/lib/auth';
 import { authUtils } from '@/lib/auth';
 
 export async function POST(request) {
@@ -14,7 +15,7 @@ export async function POST(request) {
     }
 
     const user = await authUtils.login(email, password);
-    const { createAuthToken } = require('@/lib/auth');
+
     const token = await createAuthToken(user);
     
     const response = NextResponse.json(user, { status: 200 });

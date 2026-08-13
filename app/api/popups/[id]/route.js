@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/auth';
 import { dbService } from '@/lib/db-service';
 
 export async function PUT(request, { params }) {
   try {
-    const { requireAdmin } = require('@/lib/auth');
+
     const admin = await requireAdmin(request);
     if (!admin) return NextResponse.json({ error: 'Unauthorized. Admin access required.' }, { status: 401 });
 
@@ -24,7 +25,7 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const { requireAdmin } = require('@/lib/auth');
+
     const admin = await requireAdmin(request);
     if (!admin) return NextResponse.json({ error: 'Unauthorized. Admin access required.' }, { status: 401 });
 

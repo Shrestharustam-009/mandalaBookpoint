@@ -51,7 +51,7 @@ export default function CartPage() {
     let base = 0;
 
     switch (location) {
-      case 'inside':          base = 1;    break;
+      case 'inside':          base = 100;  break;
       case 'outside':         base = 150;  break;
       case 'intl_europe_india': base = 1200; break;
       case 'intl_other':      base = 1500; break;
@@ -93,7 +93,7 @@ export default function CartPage() {
     const totalWeight = getTotalWeight();
     const shippingCost = calculateShipping(customerInfo.location, totalWeight);
 
-    if (getCartTotal() + shippingCost <= 0) {
+    if (total <= 0) {
       setError('Your cart total is invalid. Please check your cart and try again.');
       return;
     }
@@ -102,9 +102,6 @@ export default function CartPage() {
     setError('');
 
     try {
-      const totalWeight = getTotalWeight();
-      const shippingCost = calculateShipping(customerInfo.location, totalWeight);
-
       // Create order
       const orderData = {
         userId: user.id,
@@ -121,7 +118,7 @@ export default function CartPage() {
             : customerInfo.location === 'intl_canada_fast'
             ? 'International - Canada (fast)'
             : 'International - Other',
-        totalAmount: getCartTotal() + shippingCost,
+        totalAmount: total, // Use exactly what the customer sees on the screen
         status: 'pending',
         paymentMethod: 'paco',
         orderItems: cartItems.map(item => ({
@@ -170,10 +167,19 @@ export default function CartPage() {
   const calculateItemTotal = (item) => {
     const price = item.price ?? 0;
     if (price <= 0) return 0;
+    
+    // Apply regular discount
     const discountedPrice = item.discount > 0
       ? discountUtils.applyDiscount(price, item.discount)
       : price;
-    return discountedPrice * item.quantity;
+      
+    // Apply bulk discount if item quantity qualifies
+    const bulkDiscountPct = discountUtils.calculateBulkDiscount(item.quantity);
+    const finalItemPrice = bulkDiscountPct > 0
+      ? discountUtils.applyDiscount(discountedPrice, bulkDiscountPct)
+      : discountedPrice;
+      
+    return finalItemPrice * item.quantity;
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + calculateItemTotal(item), 0);
@@ -242,13 +248,13 @@ export default function CartPage() {
 
                     <div className="cart-item-price">
                       {hasPrice ? (
-                        item.discount > 0 ? (
+                        item.discount > 0 || discountUtils.calculateBulkDiscount(item.quantity) > 0 ? (
                           <>
                             <span className="original-price">
                               {currencyUtils.formatPrice(item.price, 'primary')}
                             </span>
                             <span className="discounted-price">
-                              {currencyUtils.formatPrice(discountedPrice, 'primary')}
+                              {currencyUtils.formatPrice(calculateItemTotal(item) / item.quantity, 'primary')}
                             </span>
                           </>
                         ) : (
@@ -378,7 +384,7 @@ export default function CartPage() {
                         onChange={handleInputChange}
                         required
                       />
-                      <span>Inside Valley (Rs. 1 for 1 kg)</span>
+                      <span>Inside Valley (Rs. 100 for 1 kg)</span>
                     </label>
                     <label className="radio-label">
                       <input

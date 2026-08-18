@@ -3,6 +3,7 @@ import { Analytics } from '@vercel/analytics/next'
 import siteConfig from '@/config/siteConfig'
 import { AuthProvider } from '@/app/auth-context'
 import { CartProvider } from '@/app/cart-context'
+import { Toaster } from 'sonner'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -52,6 +53,19 @@ export default function RootLayout({ children }) {
           <CartProvider>
             {children}
             <Analytics />
+            <Toaster 
+              position="top-center" 
+              richColors 
+              toastOptions={{
+                style: {
+                  fontSize: '16px',
+                  padding: '18px 24px',
+                  borderRadius: '12px',
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
+                  fontWeight: '500',
+                }
+              }}
+            />
           </CartProvider>
         </AuthProvider>
       </body>

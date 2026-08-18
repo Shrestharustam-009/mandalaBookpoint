@@ -1,6 +1,8 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
+import { toast } from 'sonner';
+import { discountUtils } from '@/lib/configHelper';
 
 const CartContext = createContext();
 
@@ -60,6 +62,10 @@ export const CartProvider = ({ children }) => {
         }];
       }
     });
+
+    toast.success(`${quantity}x ${book.title} added to cart`, {
+      description: 'You can view your cart or continue shopping.',
+    });
   };
 
   const removeFromCart = (bookId) => {
@@ -89,10 +95,17 @@ export const CartProvider = ({ children }) => {
     return cartItems.reduce((total, item) => {
       const price = item.price ?? 0;
       if (price <= 0) return total;
-      const itemPrice = item.discount > 0
-        ? price * (1 - item.discount / 100)
+      
+      const discountedPrice = item.discount > 0
+        ? discountUtils.applyDiscount(price, item.discount)
         : price;
-      return total + (itemPrice * item.quantity);
+        
+      const bulkPct = discountUtils.calculateBulkDiscount(item.quantity);
+      const finalItemPrice = bulkPct > 0 
+        ? discountUtils.applyDiscount(discountedPrice, bulkPct) 
+        : discountedPrice;
+        
+      return total + (finalItemPrice * item.quantity);
     }, 0);
   };
 

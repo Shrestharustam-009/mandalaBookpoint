@@ -65,7 +65,9 @@ function BooksContent() {
   const latestBooks = books.slice(0, 10);
 
   const displayBooks = books.filter(book => {
-    const matchesCategory = selectedCategory ? (book.categoryId || book.category_id) === selectedCategory : true;
+    const matchesCategory = selectedCategory 
+      ? ((book.categoryId || book.category_id) === selectedCategory || (Array.isArray(book.categoryIds) && book.categoryIds.includes(selectedCategory))) 
+      : true;
     const matchesSearch = searchQuery.trim()
       ? (book.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
          book.author?.toLowerCase().includes(searchQuery.toLowerCase()) ||

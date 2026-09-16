@@ -517,26 +517,26 @@ export default function BooksPage() {
       <div className="bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden border border-gray-100/50">
         {books.length > 0 ? (
           <div className="overflow-x-auto w-full">
-            <table className="w-full min-w-[800px] text-left border-collapse">
+            <table className="w-full text-left border-collapse text-sm">
               <thead>
                 <tr className="bg-gray-50/80 border-b border-gray-100">
-                  <th className="text-center px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Image</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Title</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider min-w-[250px] w-1/4">Author</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Category</th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">ISBN</th>
-                  <th className="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
-                  <th className="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Stock</th>
-                  <th className="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Weight</th>
-                  <th className="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Discount</th>
-                  <th className="text-center px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Available</th>
-                  <th className="text-center px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider" style={{ width: '150px' }}>Actions</th>
+                  <th className="text-center px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Image</th>
+                  <th className="text-left px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Title</th>
+                  <th className="text-left px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Author</th>
+                  <th className="text-left px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Category</th>
+                  <th className="text-left px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">ISBN</th>
+                  <th className="text-right px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
+                  <th className="text-right px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden sm:table-cell">Stock</th>
+                  <th className="text-right px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Weight</th>
+                  <th className="text-right px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Discount</th>
+                  <th className="text-center px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Avail.</th>
+                  <th className="text-center px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" style={{ width: '120px' }}>Actions</th>
                 </tr>
               </thead>
             <tbody>
               {filteredBooks.map(book => (
                 <tr key={book.id} className="hover:bg-gray-50/80 transition-colors duration-200 border-b border-gray-100">
-                  <td data-label="Image" className="text-center align-middle px-6 py-4">
+                  <td data-label="Image" className="text-center align-middle px-3 py-2">
                     <div className="flex justify-center">
                       <img
                         src={(book.coverImage || book.cover_image || '/placeholder.jpg').startsWith('http') 
@@ -544,8 +544,8 @@ export default function BooksPage() {
                           : (book.coverImage || book.cover_image || '/placeholder.jpg')}
                         alt={book.title || 'Book cover'}
                         style={{
-                          width: '40px',
-                          height: '60px',
+                          width: '32px',
+                          height: '48px',
                           objectFit: 'cover',
                           borderRadius: '4px',
                           backgroundColor: '#f3f4f6'
@@ -558,33 +558,40 @@ export default function BooksPage() {
                       />
                     </div>
                   </td>
-                  <td data-label="Title" className="text-left align-middle font-medium px-6 py-4">{book.title || 'Untitled'}</td>
-                  <td data-label="Author" className="text-left align-middle px-6 py-4"><div className="line-clamp-2">{book.author || 'Unknown'}</div></td>
-                  <td data-label="Category" className="text-left align-middle px-6 py-4">
-                    {book.categories && book.categories.length > 0
-                      ? book.categories.map(c => c.name).join(', ')
-                      : getCategoryName(book.categoryId || book.category_id)}
+                  <td data-label="Title" className="text-left align-middle font-medium px-3 py-3">
+                    <div className="line-clamp-2" title={book.title}>{book.title || 'Untitled'}</div>
                   </td>
-                  <td data-label="ISBN" className="text-left align-middle whitespace-nowrap px-6 py-4">{book.isbn || '-'}</td>
-                  <td data-label="Price" className="text-right align-middle whitespace-nowrap px-6 py-4">{book.price != null ? `Rs. ${parseFloat(book.price).toFixed(2)}` : '-'}</td>
-                  <td data-label="Stock" className="text-right align-middle px-6 py-4">{book.stock ?? 0}</td>
-                  <td data-label="Weight" className="text-right align-middle whitespace-nowrap px-6 py-4">{book.weight ? `${book.weight} kg` : '-'}</td>
-                  <td data-label="Discount" className="text-right align-middle px-6 py-4">{book.discount || 0}%</td>
-                  <td data-label="Available" className="text-center align-middle px-6 py-4">{book.availability ? '✓' : '✗'}</td>
-                  <td data-label="Actions" className="text-center align-middle px-6 py-4">
-                    <button
-                      className="px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors"
-                      onClick={() => handleEdit(book)}
-                      style={{ marginRight: '5px' }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="px-3 py-1.5 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 shadow-sm transition-colors"
-                      onClick={() => handleDelete(book.id)}
-                    >
-                      Delete
-                    </button>
+                  <td data-label="Author" className="text-left align-middle px-3 py-3">
+                    <div className="line-clamp-2" title={book.author}>{book.author || 'Unknown'}</div>
+                  </td>
+                  <td data-label="Category" className="text-left align-middle px-3 py-3 hidden md:table-cell">
+                    <div className="line-clamp-1">
+                      {book.categories && book.categories.length > 0
+                        ? book.categories.map(c => c.name).join(', ')
+                        : getCategoryName(book.categoryId || book.category_id)}
+                    </div>
+                  </td>
+                  <td data-label="ISBN" className="text-left align-middle whitespace-nowrap px-3 py-3 hidden lg:table-cell">{book.isbn || '-'}</td>
+                  <td data-label="Price" className="text-right align-middle whitespace-nowrap px-3 py-3">{book.price != null ? `Rs. ${parseFloat(book.price).toFixed(2)}` : '-'}</td>
+                  <td data-label="Stock" className="text-right align-middle px-3 py-3 hidden sm:table-cell">{book.stock ?? 0}</td>
+                  <td data-label="Weight" className="text-right align-middle whitespace-nowrap px-3 py-3 hidden lg:table-cell">{book.weight ? `${book.weight} kg` : '-'}</td>
+                  <td data-label="Discount" className="text-right align-middle px-3 py-3 hidden md:table-cell">{book.discount || 0}%</td>
+                  <td data-label="Available" className="text-center align-middle px-3 py-3">{book.availability ? '✓' : '✗'}</td>
+                  <td data-label="Actions" className="text-center align-middle px-3 py-3">
+                    <div className="flex justify-center gap-1">
+                      <button
+                        className="px-2 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded hover:bg-gray-50 transition-colors"
+                        onClick={() => handleEdit(book)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded hover:bg-red-600 transition-colors"
+                        onClick={() => handleDelete(book.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

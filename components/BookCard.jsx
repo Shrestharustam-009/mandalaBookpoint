@@ -117,7 +117,6 @@ export default function BookCard({ book }) {
           {canPurchase ? 'Add to Cart' : !hasPrice ? 'Price on request' : 'Out of Stock'}
         </button>
         <div className="bc-share-container">
-          <span className="bc-share-label">Share:</span>
           <ShareButtons url={bookUrl} title={book.title} />
         </div>
       </div>

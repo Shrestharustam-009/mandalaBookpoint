@@ -4,6 +4,16 @@ import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 
 export default function OrdersPage() {
+
+    const calculateItemPrice = (item) => {
+      const price = parseFloat(item.price) || 0;
+      const discount = parseFloat(item.discount) || 0;
+      if (discount > 0) {
+        return price - (price * discount / 100);
+      }
+      return price;
+    };
+
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,6 +33,8 @@ export default function OrdersPage() {
   }, []);
 
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [customShipping, setCustomShipping] = useState('');
+  const [sendingQuote, setSendingQuote] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
 
   const handleViewOrder = async (orderId) => {
@@ -37,6 +49,36 @@ export default function OrdersPage() {
       setModalLoading(false);
     }
   };
+
+  
+  const handleSendQuote = async () => {
+    if (!customShipping || isNaN(customShipping) || customShipping < 0) {
+      alert('Please enter a valid shipping cost');
+      return;
+    }
+    setSendingQuote(true);
+    try {
+      const res = await fetch(`/api/orders/${selectedOrder.id}/send-quote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ shippingCost: parseFloat(customShipping) })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Shipping cost updated and email sent successfully!');
+        setSelectedOrder(data.order);
+        setCustomShipping('');
+        fetchOrders(); // Refresh table
+      } else {
+        alert('Error: ' + data.error);
+      }
+    } catch (err) {
+      alert('Failed to send quote');
+    } finally {
+      setSendingQuote(false);
+    }
+  };
+
 
   const handlePrint = (order) => {
     const printWindow = window.open('', '_blank');
@@ -100,9 +142,9 @@ export default function OrdersPage() {
               ${(order.orderItems || []).map(item => `
                 <tr>
                   <td className="align-middle px-6 py-4">${item.title || ('Book #' + item.bookId)}</td>
-                  <td style="text-align: right;" className="align-middle px-6 py-4">NPR ${parseFloat(item.price).toFixed(2)}</td>
+                  <td style="text-align: right;" className="align-middle px-6 py-4">NPR ${calculateItemPrice(item).toFixed(2)}${item.discount > 0 ? ` <small>(-${item.discount}%)</small>` : ''}</td>
                   <td style="text-align: center;" className="align-middle px-6 py-4">${item.quantity}</td>
-                  <td style="text-align: right;" className="align-middle px-6 py-4">NPR ${(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
+                  <td style="text-align: right;" className="align-middle px-6 py-4">NPR ${(calculateItemPrice(item) * parseInt(item.quantity)).toFixed(2)}</td>
                 </tr>
               `).join('')}
             </tbody>
@@ -269,15 +311,20 @@ export default function OrdersPage() {
                   {(selectedOrder.orderItems || []).map((item, idx) => (
                     <tr key={idx} style={{ borderBottom: '1px solid #f3f4f6' }}>
                       <td style={{ padding: '8px 0' }} className="align-middle px-6 py-4">{item.title || `Book #${item.bookId}`}</td>
-                      <td style={{ textAlign: 'right', padding: '8px 0' }} className="align-middle px-6 py-4">NPR {parseFloat(item.price).toFixed(2)}</td>
+                      <td style={{ textAlign: 'right', padding: '8px 0' }} className="align-middle px-6 py-4">NPR {calculateItemPrice(item).toFixed(2)}{item.discount > 0 ? ` (-${item.discount}%)` : ''}</td>
                       <td style={{ textAlign: 'center', padding: '8px 0' }} className="align-middle px-6 py-4">{item.quantity}</td>
-                      <td style={{ textAlign: 'right', padding: '8px 0' }} className="align-middle px-6 py-4">NPR {(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
+                      <td style={{ textAlign: 'right', padding: '8px 0' }} className="align-middle px-6 py-4">NPR {(calculateItemPrice(item) * parseInt(item.quantity)).toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
               <div style={{ textAlign: 'right', fontWeight: 'bold', fontSize: '16px', marginTop: '15px', color: '#111827' }}>
-                Grand Total: NPR {parseFloat(selectedOrder.totalAmount).toFixed(2)}
+                {parseFloat(selectedOrder.shipping_cost || 0) > 0 && (
+                    <div style={{ fontSize: '13px', color: '#6b7280', fontWeight: 'normal', marginBottom: '4px' }}>
+                      Includes Shipping: NPR {parseFloat(selectedOrder.shipping_cost).toFixed(2)}
+                    </div>
+                  )}
+                  Grand Total: NPR {parseFloat(selectedOrder.totalAmount).toFixed(2)}
               </div>
             </div>
 

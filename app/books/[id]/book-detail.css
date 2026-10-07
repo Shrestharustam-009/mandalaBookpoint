@@ -296,8 +296,8 @@
 }
 
 .btn-add-to-cart-large {
-  flex: 1;
-  padding: 12px 24px;
+  padding: 12px 32px;
+  min-width: 180px;
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -527,6 +527,26 @@
 
   .purchase-section {
     flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .purchase-section .share-buttons,
+  .purchase-section .share-native {
+    width: 100% !important;
+  }
+  
+  .quantity-selector {
+    align-items: stretch;
+  }
+
+  .quantity-controls {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .qty-input {
+    flex: 1;
+    width: auto;
   }
 
   .btn-add-to-cart-large {

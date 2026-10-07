@@ -42,7 +42,7 @@ export default function ShareButtons({ url, title, text = '' }) {
   };
 
   return (
-    <div className="share-buttons" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+    <div className="share-buttons" style={{ display: 'flex', justifyContent: 'center' }}>
       <button
         type="button"
         onClick={handleShare}
@@ -53,7 +53,6 @@ export default function ShareButtons({ url, title, text = '' }) {
           alignItems: 'center',
           justifyContent: 'center',
           gap: '8px',
-          width: '100%',
           minWidth: '120px',
           height: '40px',
           padding: '0 16px',

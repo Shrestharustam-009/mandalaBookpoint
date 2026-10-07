@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -19,6 +19,21 @@ export default function CartPage() {
   
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
+  const [shippingRates, setShippingRates] = useState([]);
+  const [loadingRates, setLoadingRates] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/shipping')
+      .then(res => res.json())
+      .then(data => {
+        setShippingRates(Array.isArray(data) ? data : []);
+        setLoadingRates(false);
+      })
+      .catch(err => {
+        console.error('Error fetching shipping rates:', err);
+        setLoadingRates(false);
+      });
+  }, []);
   const [customerInfo, setCustomerInfo] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -86,7 +101,7 @@ export default function CartPage() {
     }
 
     if (!isFormValid()) {
-      setError('Please fill in all required fields (Name, Phone, and Location)');
+      setError('Please fill in all required fields (Name, Phone, Location, and Address)');
       return;
     }
 
@@ -108,19 +123,10 @@ export default function CartPage() {
         customerName: customerInfo.name.trim(),
         customerEmail: customerInfo.email.trim() || user.email || '',
         customerPhone: customerInfo.phone.trim(),
-        shippingAddress:
-          customerInfo.location === 'inside'
-            ? 'Inside Valley'
-            : customerInfo.location === 'outside'
-            ? 'Outside Valley'
-            : customerInfo.location === 'intl_europe_india'
-            ? 'International - Europe/India'
-            : customerInfo.location === 'intl_canada_fast'
-            ? 'International - Canada (fast)'
-            : 'International - Other',
+        shippingAddress: (customerInfo.location === 'other' ? 'Other (Not Listed)' : customerInfo.location) + ' - ' + customerInfo.address.trim(),
         totalAmount: total, // Use exactly what the customer sees on the screen
         status: 'pending',
-        paymentMethod: 'paco',
+        paymentMethod: customerInfo.location === 'other' ? 'Pending Quote' : 'paco',
         orderItems: cartItems.map(item => ({
           bookId: item.id,
           title: item.title,
@@ -134,6 +140,13 @@ export default function CartPage() {
       const order = await api.orders.create(orderData);
 
       // Generate payment page
+      if (customerInfo.location === 'other') {
+        alert('Order placed successfully! Since your country is not listed, our team will contact you via email shortly with a custom shipping quote.');
+        clearCart();
+        router.push('/');
+        return;
+      }
+
       const paymentResponse = await api.payment.generatePage({
         orderId: order.id,
         amount: order.totalAmount,
@@ -147,10 +160,8 @@ export default function CartPage() {
         cancelUrl: `${window.location.origin}/payment/cancel?orderId=${order.id}`,
       });
 
-      // Clear cart after successful order creation
       clearCart();
 
-      // Redirect to payment page
       if (paymentResponse.paymentPageUrl) {
         window.location.href = paymentResponse.paymentPageUrl;
       } else {
@@ -374,62 +385,37 @@ export default function CartPage() {
                   <label className="form-label">
                     Location <span className="required">*</span>
                   </label>
-                  <div className="radio-group">
-                    <label className="radio-label">
-                      <input
-                        type="radio"
-                        name="location"
-                        value="inside"
-                        checked={customerInfo.location === 'inside'}
-                        onChange={handleInputChange}
-                        required
-                      />
-                      <span>Inside Valley (Rs. 100 for 1 kg)</span>
+                  <select
+                    name="location"
+                    className="form-input"
+                    value={customerInfo.location}
+                    onChange={handleInputChange}
+                    required
+                    style={{ width: '100%', padding: '10px' }}
+                  >
+                    <option value="">Select your country</option>
+                    {shippingRates.map(rate => (
+                      <option key={rate.id} value={rate.country}>
+                        {rate.country} (Rs. {rate.ratePerKg}/kg)
+                      </option>
+                    ))}
+                    <option value="other">Other (Not Listed) - Contact for quote</option>
+                  </select>
+                  
+                  <div className="form-group" style={{ marginTop: '15px' }}>
+                    <label htmlFor="address" className="form-label">
+                      Full Delivery Address <span className="required">*</span>
                     </label>
-                    <label className="radio-label">
-                      <input
-                        type="radio"
-                        name="location"
-                        value="outside"
-                        checked={customerInfo.location === 'outside'}
-                        onChange={handleInputChange}
-                        required
-                      />
-                      <span>Outside Valley (Rs. 150 for 1 kg,)</span>
-                    </label>
-                    <label className="radio-label">
-                      <input
-                        type="radio"
-                        name="location"
-                        value="intl_europe_india"
-                        checked={customerInfo.location === 'intl_europe_india'}
-                        onChange={handleInputChange}
-                        required
-                      />
-                      <span>International - Europe / India (Rs. 1200 for 1 kg)</span>
-                    </label>
-                    <label className="radio-label">
-                      <input
-                        type="radio"
-                        name="location"
-                        value="intl_other"
-                        checked={customerInfo.location === 'intl_other'}
-                        onChange={handleInputChange}
-                        required
-                      />
-                      <span>International - Other (Rs. 1500 for 1 kg)</span>
-                    </label>
-                    <label className="radio-label">
-                      <input
-                        type="radio"
-                        name="location"
-                        value="intl_canada_fast"
-                        checked={customerInfo.location === 'intl_canada_fast'}
-                        onChange={handleInputChange}
-                        required
-                      />
-                      <span>International - Canada (Rs. 4500 for 1 kg, 7–14 days)</span>
-                    </label>
+                    <textarea
+                      id="address"
+                      name="address"
+                      className="form-input"
+                      value={customerInfo.address}
+                      onChange={handleInputChange}
+                      placeholder={customerInfo.location === 'other' ? 'Please include your Country, City, and full street address' : 'Enter your full street address / area'}
+                      required
+                      style={{ width: '100%', padding: '10px', minHeight: '80px', resize: 'vertical' }}
+                    />
                   </div>
                 </div>
               </div>
@@ -445,7 +431,11 @@ export default function CartPage() {
 
               <div className="summary-row">
                 <span>Delivery ({totalWeight.toFixed(2)} kg):</span>
-                <span>{currencyUtils.formatPrice(shipping, 'primary')}</span>
+                <span>
+                  {customerInfo.location === 'other' 
+                    ? 'TBD (Quote via Email)' 
+                    : currencyUtils.formatPrice(shipping, 'primary')}
+                </span>
               </div>
 
               <div className="summary-row total">

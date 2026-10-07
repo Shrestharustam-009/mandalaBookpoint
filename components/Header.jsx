@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { api } from '@/lib/api';
 import { useCart } from '@/app/cart-context';
 import { Menu, X, LogOut, ShoppingCart } from 'lucide-react';
 import siteConfig from '@/config/siteConfig';

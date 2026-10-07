@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { execute } from '@/lib/database';
+import { execute, query } from '@/lib/database';
 
 export async function GET() {
   try {
@@ -16,9 +16,9 @@ export async function GET() {
     `);
 
     // Check if it's already seeded
-    const rows = await execute('SELECT COUNT(*) as count FROM shipping_rates');
-    if (rows[0].count > 0) {
-      return NextResponse.json({ message: 'Table already exists and has data. Skipping seed.' });
+    const rows = await query('SELECT COUNT(*) as count FROM shipping_rates');
+    if (rows && rows.length > 0 && rows[0].count > 0) {
+      return NextResponse.json({ success: true, message: 'Table already exists and has data. Skipping seed.' });
     }
 
     console.log('Inserting countries and rates...');

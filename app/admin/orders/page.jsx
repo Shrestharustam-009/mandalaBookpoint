@@ -116,18 +116,12 @@ export default function OrdersPage() {
             </div>
           </div>
           
-          <div class="invoice-details">
-            <div>
-              <div class="section-title">Bill To:</div>
-              <div><strong>Name:</strong> ${order.customerName}</div>
-              <div><strong>Email:</strong> ${order.customerEmail}</div>
-              <div><strong>Phone:</strong> ${order.customerPhone || 'N/A'}</div>
+          <div class="invoice-details" style="display: block; margin-bottom: 30px;">
+              <div style="font-size: 15px; margin-bottom: 8px;"><strong>Name:-</strong> ${order.customerName}</div>
+              <div style="font-size: 15px; margin-bottom: 8px;"><strong>Delivery Address:-</strong> ${order.shippingAddress}</div>
+              <div style="font-size: 15px; margin-bottom: 8px;"><strong>Mobile:-</strong> ${order.customerPhone || 'N/A'}</div>
+              <div style="font-size: 15px; margin-bottom: 8px;"><strong>Phone:-</strong> ${order.customerPhone || 'N/A'}</div>
             </div>
-            <div style="text-align: right;">
-              <div class="section-title">Shipping Address:</div>
-              <div style="white-space: pre-line; max-width: 300px; font-style: italic;">${order.shippingAddress}</div>
-            </div>
-          </div>
           
           <table>
             <thead className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -153,9 +147,9 @@ export default function OrdersPage() {
           <div class="total">Grand Total: NPR ${parseFloat(order.totalAmount).toFixed(2)}</div>
           
           <div class="footer">
-            Thank you for shopping at Mandala Book Point!<br>
-            If you have any questions, please contact support@mandalabookpoint.com
-          </div>
+              Thank you for shopping at Mandala Book Point!<br>
+              If you have any questions, please contact <strong>info@mandalabookpoint.com</strong> or <strong>books@mos.com.np</strong>
+            </div>
           
           <script>
             window.onload = function() {

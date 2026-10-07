@@ -328,7 +328,37 @@ export default function OrdersPage() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', borderTop: '1px solid #e5e7eb', paddingTop: '15px' }}>
+            
+              {selectedOrder.paymentMethod === 'Pending Quote' && selectedOrder.status === 'pending' && (
+                <div style={{ marginBottom: '25px', backgroundColor: '#eff6ff', padding: '15px', borderRadius: '8px', border: '1px solid #bfdbfe' }}>
+                  <h4 style={{ margin: '0 0 10px 0', color: '#1e3a8a' }}>Action Required: Set Shipping Quote</h4>
+                  <p style={{ fontSize: '13px', color: '#1e40af', marginBottom: '10px' }}>
+                    This order requires a custom shipping quote. Enter the delivery cost below to automatically update the invoice and email the customer a payment link.
+                  </p>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', backgroundColor: 'white', border: '1px solid #93c5fd', borderRadius: '6px', padding: '0 10px' }}>
+                      <span style={{ color: '#6b7280', fontWeight: 'bold', marginRight: '5px' }}>NPR</span>
+                      <input 
+                        type="number" 
+                        value={customShipping}
+                        onChange={(e) => setCustomShipping(e.target.value)}
+                        placeholder="Enter shipping cost"
+                        style={{ border: 'none', outline: 'none', padding: '8px 0', width: '150px' }}
+                      />
+                    </div>
+                    <button 
+                      onClick={handleSendQuote}
+                      disabled={sendingQuote}
+                      style={{ backgroundColor: '#2563eb', color: 'white', border: 'none', borderRadius: '6px', padding: '0 15px', fontWeight: 'bold', cursor: sendingQuote ? 'not-allowed' : 'pointer', opacity: sendingQuote ? 0.7 : 1 }}
+                    >
+                      {sendingQuote ? 'Sending Email...' : 'Update & Email Customer'}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', borderTop: '1px solid #e5e7eb', paddingTop: '15px' }}>
               <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors" style={{ padding: '8px 16px', cursor: 'pointer' }} onClick={() => handlePrint(selectedOrder)}>
                 Print Invoice
               </button>

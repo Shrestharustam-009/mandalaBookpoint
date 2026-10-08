@@ -11,7 +11,7 @@ export async function POST(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { shippingCost } = body;
 
@@ -49,6 +49,6 @@ export async function POST(request, { params }) {
 
   } catch (error) {
     console.error('Error in send-quote API:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error', details: error.message, stack: error.stack }, { status: 500 });
   }
 }

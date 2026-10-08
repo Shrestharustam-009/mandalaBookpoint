@@ -61,6 +61,7 @@ export default function OrdersPage() {
       const res = await fetch(`/api/orders/${selectedOrder.id}/send-quote`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
         body: JSON.stringify({ shippingCost: parseFloat(customShipping) })
       });
       const data = await res.json();

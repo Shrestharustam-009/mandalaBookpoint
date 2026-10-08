@@ -15,6 +15,10 @@ export async function POST(request) {
   try {
     const orderData = await request.json();
     const newOrder = await dbService.orders.create(orderData);
+    if (newOrder.paymentMethod === 'Pending Quote' || orderData.customerInfo?.location === 'other') {
+      const { sendOrderReceivedEmail } = await import('@/lib/email');
+      await sendOrderReceivedEmail(newOrder);
+    }
     return NextResponse.json(newOrder, { status: 201 });
   } catch (error) {
     console.error('Error creating order:', error);

@@ -38,6 +38,7 @@ export default function CartPage() {
     name: user?.name || '',
     email: user?.email || '',
     phone: '',
+      alternatePhone: '',
     location: '',
   });
 
@@ -123,6 +124,7 @@ export default function CartPage() {
         customerName: customerInfo.name.trim(),
         customerEmail: customerInfo.email.trim() || user.email || '',
         customerPhone: customerInfo.phone.trim(),
+          alternatePhone: customerInfo.alternatePhone ? customerInfo.alternatePhone.trim() : null,
         shippingAddress: (customerInfo.location === 'other' ? 'Other (Not Listed)' : customerInfo.location) + ' - ' + customerInfo.address.trim(),
         totalAmount: total, // Use exactly what the customer sees on the screen
         status: 'pending',
@@ -367,7 +369,7 @@ export default function CartPage() {
 
                 <div className="form-group">
                   <label htmlFor="phone" className="form-label">
-                    Phone <span className="required">*</span>
+                    Mobile No <span className="required">*</span>
                   </label>
                   <input
                     type="tel"
@@ -376,8 +378,23 @@ export default function CartPage() {
                     className="form-input"
                     value={customerInfo.phone}
                     onChange={handleInputChange}
-                    placeholder="Enter your phone number"
+                    placeholder="Enter your primary mobile number"
                     required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="alternatePhone" className="form-label">
+                    Phone No <span style={{fontSize: '0.85em', color: '#6b7280', fontWeight: 'normal'}}>(Optional)</span>
+                  </label>
+                  <input
+                    type="tel"
+                    id="alternatePhone"
+                    name="alternatePhone"
+                    className="form-input"
+                    value={customerInfo.alternatePhone}
+                    onChange={handleInputChange}
+                    placeholder="Enter an alternate phone or landline"
                   />
                 </div>
 

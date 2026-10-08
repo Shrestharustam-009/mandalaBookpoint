@@ -110,7 +110,7 @@ export default function OrdersPage() {
               <div style="font-size: 12px; margin-top: 5px; color: #4b5563;">Kantipath, Kathmandu, Nepal</div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 20px; font-weight: bold; color: #374151;">INVOICE</div>
+              <div style="font-size: 20px; font-weight: bold; color: #374151;">NOT ORIGINAL</div>
               <div style="font-size: 12px; color: #6b7280; margin-top: 5px;">Order ID: #${order.id}</div>
               <div style="font-size: 12px; color: #6b7280;">Date: ${new Date(order.createdAt).toLocaleDateString()}</div>
             </div>
@@ -120,7 +120,7 @@ export default function OrdersPage() {
               <div style="font-size: 15px; margin-bottom: 8px;"><strong>Name:-</strong> ${order.customerName}</div>
               <div style="font-size: 15px; margin-bottom: 8px;"><strong>Delivery Address:-</strong> ${order.shippingAddress}</div>
               <div style="font-size: 15px; margin-bottom: 8px;"><strong>Mobile:-</strong> ${order.customerPhone || 'N/A'}</div>
-              <div style="font-size: 15px; margin-bottom: 8px;"><strong>Phone:-</strong> ${order.customerPhone || 'N/A'}</div>
+              <div style="font-size: 15px; margin-bottom: 8px;"><strong>Phone:-</strong> ${order.alternatePhone || 'N/A'}</div>
             </div>
           
           <table>
@@ -266,7 +266,8 @@ export default function OrdersPage() {
                 <h4 style={{ margin: '0 0 8px 0', color: '#374151' }}>Customer Information</h4>
                 <div><strong>Name:</strong> {selectedOrder.customerName}</div>
                 <div><strong>Email:</strong> {selectedOrder.customerEmail}</div>
-                <div><strong>Phone:</strong> {selectedOrder.customerPhone || 'N/A'}</div>
+                <div><strong>Mobile:</strong> {selectedOrder.customerPhone || 'N/A'}</div>
+                  <div><strong>Phone:</strong> {selectedOrder.alternatePhone || 'N/A'}</div>
               </div>
               <div>
                 <h4 style={{ margin: '0 0 8px 0', color: '#374151' }}>Order Summary</h4>

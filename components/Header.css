@@ -460,3 +460,30 @@
 .search-result-price { font-size: 14px; font-weight: 700; color: #1e3a8a; white-space: nowrap; }
 .search-view-all { display: block; text-align: center; padding: 12px; background: #f8fafc; color: #2563eb; font-size: 14px; font-weight: 600; text-decoration: none; transition: background-color 0.2s; border-top: 1px solid #e5e7eb; }
 .search-view-all:hover { background: #f1f5f9; }
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .mobile-only .header-search {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .mobile-only .header-search-input {
+    width: 100%;
+  }
+  
+  .mobile-only .search-dropdown {
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+}

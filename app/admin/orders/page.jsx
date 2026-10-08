@@ -69,7 +69,7 @@ export default function OrdersPage() {
         alert('Shipping cost updated and email sent successfully!');
         setSelectedOrder(data.order);
         setCustomShipping('');
-        fetchOrders(); // Refresh table
+        window.location.reload(); // Refresh table
       } else {
         alert('Error: ' + data.error);
       }

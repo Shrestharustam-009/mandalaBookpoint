@@ -42,8 +42,8 @@ function PaymentPageContent() {
   }, [orderId]);
 
   const handlePayment = async () => {
-    if (!order || !user) {
-      setError('Order or user information is missing');
+    if (!order) {
+      setError('Order information is missing');
       return;
     }
 

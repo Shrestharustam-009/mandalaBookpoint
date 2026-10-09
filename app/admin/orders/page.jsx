@@ -197,7 +197,7 @@ export default function OrdersPage() {
               Thank you for shopping at Mandala Book Point!<br>
               If you have any questions, please contact:<br/>
               <span style="font-size: 14px; color: #111827; display: inline-block; margin-top: 10px;">
-                <strong>books@mos.com.np</strong> | <strong>info@mos.com.np</strong> | <strong>info@mandalabookpoint.com</strong>
+                <strong>books@mos.com.np</strong> | <strong>info@mandalabookpoint.com</strong>
               </span>
           </div>
           

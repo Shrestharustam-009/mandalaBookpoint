@@ -32,7 +32,7 @@ export async function POST(request) {
       );
     }
 
-    const baseUrl = process.env.PACO_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.PACO_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://mandalabookpoint.com';
     const currencyCode = (currency && String(currency).trim()) || 'NPR';
     const amountValue = parseFloat(amount);
     const orderNo = pacoNumericOrderNo();

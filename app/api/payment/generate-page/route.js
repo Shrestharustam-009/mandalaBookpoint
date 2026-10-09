@@ -37,7 +37,7 @@ export async function POST(request) {
 
     // Use PACO_PUBLIC_BASE_URL for ngrok/tunnel when testing locally
     const isUat = (process.env.PACO_ENV || 'uat').toLowerCase() === 'uat';
-    const baseUrl = process.env.PACO_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.PACO_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://mandalabookpoint.com';
 
     // Use NPR as default strictly enforced currency (prevent payload spoofing)
     const currencyCode = 'NPR';

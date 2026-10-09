@@ -7,7 +7,7 @@ const siteConfig = {
   // Site Identity
   siteName: 'MandalaBookPoint',
   siteDescription: 'Your digital library for discovering and purchasing books',
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://mandalabookpoint.com',
   
   // Logo & Branding
   logo: '/placeholder-logo.svg',

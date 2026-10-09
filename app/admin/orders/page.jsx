@@ -81,7 +81,31 @@ export default function OrdersPage() {
   };
 
 
-  const handlePrint = (order) => {
+    const handlePrint = async (order) => {
+    let isUSD = false;
+    let exchangeRate = 1;
+    
+    // Check if USA for USD conversion
+    const addressLC = (order.shippingAddress || '').toLowerCase();
+    if (addressLC.includes('usa') || addressLC.includes('united states') || addressLC.includes(' us ') || addressLC.endsWith(' us')) {
+      isUSD = true;
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/NPR');
+        const data = await res.json();
+        exchangeRate = data.rates.USD;
+      } catch (e) {
+        console.error("Failed to fetch exchange rate", e);
+        exchangeRate = 0.0075; // Fallback rate
+      }
+    }
+
+    const booksSubtotal = (order.orderItems || []).reduce((acc, item) => acc + (calculateItemPrice(item) * parseInt(item.quantity)), 0);
+    const rawDeliveryCharge = parseFloat(order.totalAmount) - booksSubtotal;
+    const deliveryCharge = rawDeliveryCharge > 0.01 ? rawDeliveryCharge : 0;
+    
+    const currSym = isUSD ? 'USD' : 'NPR';
+    const fmt = (val) => (val * exchangeRate).toFixed(2);
+
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
       alert('Please allow popups to download/print invoices.');
@@ -90,17 +114,21 @@ export default function OrdersPage() {
     printWindow.document.write(`
       <html>
         <head>
-          <title>Invoice - Order #${order.id}</title>
+          <title>Order Copy - Order #${order.id}</title>
           <style>
             body { font-family: 'Outfit', 'Inter', sans-serif; padding: 40px; color: #1f2937; line-height: 1.5; }
             .header { display: flex; justify-content: space-between; border-bottom: 2px solid #e5e7eb; padding-bottom: 20px; margin-bottom: 30px; }
             .title { font-size: 24px; font-weight: bold; color: #1e3a8a; text-transform: uppercase; }
             .invoice-details { display: flex; justify-content: space-between; margin-bottom: 40px; font-size: 14px; }
             .section-title { font-size: 16px; font-weight: bold; margin-bottom: 10px; color: #374151; border-bottom: 1px solid #f3f4f6; padding-bottom: 5px; }
-            table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
             th { background-color: #f3f4f6; text-align: left; padding: 12px; font-weight: 600; font-size: 14px; }
             td { padding: 12px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
-            .total { text-align: right; font-size: 18px; font-weight: bold; color: #111827; margin-top: 20px; }
+            .totals-container { width: 100%; display: flex; justify-content: flex-end; }
+            .totals-table { width: 300px; }
+            .totals-table td { padding: 8px 12px; border: none; text-align: right; font-size: 15px; }
+            .totals-table .border-top { border-top: 1px solid #111827; }
+            .total-bold { font-size: 18px; font-weight: bold; color: #111827; }
             .footer { text-align: center; margin-top: 50px; font-size: 12px; color: #9ca3af; border-top: 1px solid #e5e7eb; padding-top: 20px; }
           </style>
         </head>
@@ -111,7 +139,7 @@ export default function OrdersPage() {
               <div style="font-size: 12px; margin-top: 5px; color: #4b5563;">Kantipath, Kathmandu, Nepal</div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 20px; font-weight: bold; color: #374151;">NOT ORIGINAL</div>
+              <div style="font-size: 20px; font-weight: bold; color: #374151;">ORDER COPY</div>
               <div style="font-size: 12px; color: #6b7280; margin-top: 5px;">Order ID: #${order.id}</div>
               <div style="font-size: 12px; color: #6b7280;">Date: ${new Date(order.createdAt).toLocaleDateString()}</div>
             </div>
@@ -122,35 +150,56 @@ export default function OrdersPage() {
               <div style="font-size: 15px; margin-bottom: 8px;"><strong>Delivery Address:-</strong> ${order.shippingAddress}</div>
               <div style="font-size: 15px; margin-bottom: 8px;"><strong>Mobile:-</strong> ${order.customerPhone || 'N/A'}</div>
               <div style="font-size: 15px; margin-bottom: 8px;"><strong>Phone:-</strong> ${order.alternatePhone || 'N/A'}</div>
-            </div>
+          </div>
           
           <table>
-            <thead className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              <tr className="bg-gray-50/80 border-b border-gray-100">
-                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Book Title</th>
-                <th style="text-align: right;" className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price (NPR)</th>
-                <th style="text-align: center;" className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Qty</th>
-                <th style="text-align: right;" className="text-left px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total (NPR)</th>
+            <thead>
+              <tr>
+                <th>Book Title</th>
+                <th style="text-align: right;">Price (${currSym})</th>
+                <th style="text-align: center;">Qty</th>
+                <th style="text-align: right;">Total (${currSym})</th>
               </tr>
             </thead>
             <tbody>
               ${(order.orderItems || []).map(item => `
                 <tr>
-                  <td className="align-middle px-6 py-4">${item.title || ('Book #' + item.bookId)}</td>
-                  <td style="text-align: right;" className="align-middle px-6 py-4">NPR ${calculateItemPrice(item).toFixed(2)}${item.discount > 0 ? ` <small>(-${item.discount}%)</small>` : ''}</td>
-                  <td style="text-align: center;" className="align-middle px-6 py-4">${item.quantity}</td>
-                  <td style="text-align: right;" className="align-middle px-6 py-4">NPR ${(calculateItemPrice(item) * parseInt(item.quantity)).toFixed(2)}</td>
+                  <td>${item.title || ('Book #' + item.bookId)}</td>
+                  <td style="text-align: right;">${currSym} ${fmt(calculateItemPrice(item))}${item.discount > 0 ? ` <small>(-${item.discount}%)</small>` : ''}</td>
+                  <td style="text-align: center;">${item.quantity}</td>
+                  <td style="text-align: right;">${currSym} ${fmt(calculateItemPrice(item) * parseInt(item.quantity))}</td>
                 </tr>
               `).join('')}
             </tbody>
           </table>
           
-          <div class="total">Grand Total: NPR ${parseFloat(order.totalAmount).toFixed(2)}</div>
+          <div class="totals-container">
+            <table class="totals-table">
+              ${deliveryCharge > 0 ? `
+                <tr>
+                  <td>Delivery Charge:</td>
+                  <td>${currSym} ${fmt(deliveryCharge)}</td>
+                </tr>
+              ` : ''}
+              <tr>
+                <td class="border-top total-bold">Grand Total:</td>
+                <td class="border-top total-bold">${currSym} ${fmt(order.totalAmount)}</td>
+              </tr>
+              ${isUSD ? `
+                <tr>
+                  <td colspan="2" style="font-size: 11px; color: #6b7280; text-align: right;">(Converted from NPR ${parseFloat(order.totalAmount).toFixed(2)} using live exchange rate)</td>
+                </tr>
+              ` : ''}
+            </table>
+          </div>
           
           <div class="footer">
               Thank you for shopping at Mandala Book Point!<br>
-              If you have any questions, please contact <strong>info@mandalabookpoint.com</strong> or <strong>books@mos.com.np</strong>
-            </div>
+              If you have any questions, please contact:<br/>
+              <span style="font-size: 14px; color: #111827; display: inline-block; margin-top: 10px;">
+                <strong>books@mos.com.np</strong> | <strong>info@mos.com.np</strong> | <strong>info@mandalabookpoint.com</strong>
+              </span>
+          </div>
           
           <script>
             window.onload = function() {

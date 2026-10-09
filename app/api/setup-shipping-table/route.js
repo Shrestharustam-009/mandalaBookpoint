@@ -23,7 +23,7 @@ export async function GET() {
 
     console.log('Inserting countries and rates...');
     const rates = [
-      ['Kathmandu Valley', 100], ['Nepal (Outside Kathmandu)', 150], 
+      ['Nepal (Kathmandu Valley)', 100], ['Nepal (Outside Kathmandu)', 150], 
       ['USA', 1500], ['Japan', 1200], ['Australia', 1500], 
       ['UK', 1500], ['Germany', 1200], ['Italy', 1200], 
       ['France', 1200], ['Hong Kong', 1200], ['Singapore', 1200], 

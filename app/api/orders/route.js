@@ -15,10 +15,17 @@ export async function POST(request) {
   try {
     const orderData = await request.json();
     const newOrder = await dbService.orders.create(orderData);
+    
+    // Send customer email for pending quotes
     if (newOrder.paymentMethod === 'Pending Quote' || orderData.customerInfo?.location === 'other') {
       const { sendOrderReceivedEmail } = await import('@/lib/email');
       await sendOrderReceivedEmail(newOrder);
     }
+    
+    // Send Admin Alert for every new order
+    const { sendAdminOrderAlertEmail } = await import('@/lib/email');
+    await sendAdminOrderAlertEmail(newOrder, 'NEW_ORDER');
+
     return NextResponse.json(newOrder, { status: 201 });
   } catch (error) {
     console.error('Error creating order:', error);

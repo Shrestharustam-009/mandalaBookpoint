@@ -128,6 +128,14 @@ export async function POST(request) {
                 await execute('UPDATE books SET stock = COALESCE(stock, 0) - ? WHERE id = ?', [qty, item.bookId]);
               }
               console.log(`✅ Stock deducted for order #${orderId}`);
+            try {
+              const { sendOrderPaidEmail, sendAdminOrderAlertEmail } = await import('@/lib/email');
+              await sendOrderPaidEmail(order);
+              await sendAdminOrderAlertEmail(order, 'ORDER_PAID');
+              console.log(`Emails sent for order #${orderId}`);
+            } catch (emailErr) {
+              console.error('Failed to send payment emails:', emailErr);
+            }
             }
           } else {
             console.log(`ℹ️ Order #${orderId} already in final state: ${order.status}, skipping update`);
